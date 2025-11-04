@@ -1,0 +1,35 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!-- Remove black focus rectangle globally -->
+    <SolidColorBrush x:Key="FocusVisualPrimaryBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="FocusVisualSecondaryBrush" Color="Transparent" />
+
+    <!-- Override the focus visuals thickness -->
+    <Thickness x:Key="FocusVisualMargin">0</Thickness>
+    <Thickness x:Key="FocusVisualThickness">0</Thickness>
+
+    <!-- TextBox/PasswordBox focused states: remove focus highlight -->
+    <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="Transparent" />
+    <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="#A5D6A7" />
+    <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="Transparent" />
+    <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#A5D6A7" />
+
+    <!-- Just to be extra sure -->
+    <Style TargetType="TextBox">
+        <Setter Property="UseSystemFocusVisuals" Value="False" />
+        <Setter Property="BorderBrush" Value="#8DC63F" />
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+
+    <Style TargetType="PasswordBox">
+        <Setter Property="UseSystemFocusVisuals" Value="False" />
+        <Setter Property="BorderBrush" Value="#8DC63F" />
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+
+
+    <Color x:Key="PrimaryColor">#4CAF50</Color>
+    <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}" />
+</ResourceDictionary>

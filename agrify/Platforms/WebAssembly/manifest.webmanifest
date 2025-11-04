@@ -1,0 +1,10 @@
+{
+  "background_color": "#ffffff",
+  "description": "agrify",
+  "display": "standalone",
+  "name": "agrify",
+  "short_name": "agrify",
+  "start_url": "/index.html",
+  "theme_color": "#ffffff",
+  "scope": "/"
+}
