@@ -32,7 +32,7 @@ public sealed partial class App : Application
 
         if (rootFrame.Content == null)
         {
-            rootFrame.Navigate(typeof(MainPage), args.Arguments);
+            rootFrame.Navigate(typeof(LoginPage), args.Arguments);
         }
 
         MainWindow.Activate();

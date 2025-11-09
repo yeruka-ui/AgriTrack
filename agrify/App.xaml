@@ -10,37 +10,28 @@
     <Application.Resources>
         <ResourceDictionary>
         
-            <!-- ✅ Merged theme resources -->
             <ResourceDictionary.MergedDictionaries>
-                <!-- Base Uno + Material theme -->
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
-                <um:MaterialColors />
-                <um:MaterialResources />
+                <um:MaterialColors/>
+                <um:MaterialResources/>
 
-                <!-- Custom overrides -->
                 <ResourceDictionary Source="ms-appx:///Styles/ColorsOverrideLogin.xaml" />
                 <ResourceDictionary Source="ms-appx:///Styles/FontsOverrideLogin.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <!-- ✅ Custom styles go here, NOT inside the merged dictionaries -->
             <Style TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
                 <Setter Property="UseSystemFocusVisuals" Value="False" />
-                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="#006F31" />
             </Style>
 
-            <Style TargetType="PasswordBox" BasedOn="{StaticResource DefaultPasswordBoxStyle}">
-                <Setter Property="UseSystemFocusVisuals" Value="False" />
-                <Setter Property="BorderBrush" Value="Transparent" />
-            </Style>
-
+        
+            
             <!-- ✅ Focus visuals override -->
-            <SolidColorBrush x:Key="SystemControlFocusVisualPrimaryBrush" Color="#8BC34A" />
-            <SolidColorBrush x:Key="SystemControlFocusVisualSecondaryBrush" Color="#AED581" />
+   
             <Thickness x:Key="FocusVisualMargin">0</Thickness>
             <Thickness x:Key="FocusVisualThickness">2</Thickness>
 
-            
-
+           
             
         </ResourceDictionary>
 
