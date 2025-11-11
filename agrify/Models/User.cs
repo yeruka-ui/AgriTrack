@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations; // Needed for [Key]
+using System.ComponentModel.DataAnnotations; 
 
 namespace agrify.Models
 {
     public class User
     {
-        [Key] // This tells EF Core that 'Id' is the primary key
+        [Key] // ID as primary key
         public int Id { get; set; }
 
         public string Username { get; set; }

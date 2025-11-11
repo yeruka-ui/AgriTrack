@@ -39,6 +39,8 @@ namespace agrify.ViewModels
         [RelayCommand]
         private async Task Login()
         {
+
+
             // 1. Check for empty boxes...
             if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
             {
