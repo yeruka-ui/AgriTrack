@@ -5,10 +5,119 @@
     xmlns:local="using:agrify.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="#FF2D2D30"> <Grid Padding="48">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" /> <RowDefinition Height="Auto" /> <RowDefinition Height="Auto" /> <RowDefinition Height="*" />  </Grid.RowDefinitions>
 
-    <Grid>
+        <Grid Grid.Row="0" Margin="0,0,0,40">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" /> <ColumnDefinition Width="1*" /> <ColumnDefinition Width="1.5*" /> <ColumnDefinition Width="1*" /> <ColumnDefinition Width="1.5*" /> <ColumnDefinition Width="1*" /> <ColumnDefinition Width="1*" /> </Grid.ColumnDefinitions>
+
+            <TextBlock Text="INPUT INFORMATION"
+                       Grid.Column="0"
+                       Foreground="White"
+                       FontSize="16"
+                       FontWeight="Bold"
+                       VerticalAlignment="Top"
+                       Margin="0,-30,0,10"/>
+
+            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                <TextBlock Text="ANIMAL / SPECIES" Foreground="LightGray" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                <TextBox x:Name="SpeciesTextBox" PlaceholderText="Specify Species..." Background="#FFD9FFD9" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Margin="10,0,10,0">
+                <TextBlock Text="WEIGHT" Foreground="LightGray" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                <TextBox x:Name="WeightTextBox" PlaceholderText="Specify weight..." Background="#FFD9FFD9" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="2" Margin="10,0,10,0">
+                <TextBlock Text="DATE OF BIRTH:" Foreground="LightGray" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                <DatePicker x:Name="DobDatePicker" Background="#FFD9FFD9" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="3" Margin="10,0,10,0">
+                <TextBlock Text="GENDER" Foreground="LightGray" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                <RadioButton x:Name="GenderFemaleRadioButton" Content="Female" Foreground="White" GroupName="Gender" />
+                <RadioButton x:Name="GenderMaleRadioButton" Content="Male" Foreground="White" GroupName="Gender" IsChecked="True" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="4" Margin="10,0,10,0">
+                <TextBlock Text="STATUS" Foreground="LightGray" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                <RadioButton x:Name="StatusSoldRadioButton" Content="Sold" Foreground="White" GroupName="Status" />
+                <RadioButton x:Name="StatusTreatmentRadioButton" Content="Under Treatment" Foreground="White" GroupName="Status" />
+                <RadioButton x:Name="StatusRecoveredRadioButton" Content="Recovered" Foreground="White" GroupName="Status" IsChecked="True" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="5" Margin="10,0,10,0">
+                <TextBlock Text="ACTIVITY" Foreground="LightGray" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                <RadioButton x:Name="ActivityActiveRadioButton" Content="Active" Foreground="White" GroupName="Activity" IsChecked="True" />
+                <RadioButton x:Name="ActivityInactiveRadioButton" Content="Inactive" Foreground="White" GroupName="Activity" />
+            </StackPanel>
+
+            <Button x:Name="SubmitButton"
+                    Grid.Column="6"
+                    Content="SUBMIT"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Bottom"
+                    Background="#FF006400"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    Click="SubmitButton_Click" />
+        </Grid>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="LIVESTOCK DATA"
+                       Foreground="White"
+                       FontSize="16"
+                       FontWeight="Bold"
+                       VerticalAlignment="Bottom"/>
+            <TextBlock Text="Livestock"
+                       Foreground="LightGray"
+                       FontSize="14"
+                       Margin="10,0,0,0"
+                       VerticalAlignment="Bottom"/>
+        </StackPanel>
+
+        <Grid Grid.Row="2" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox x:Name="SearchTextBox"
+                     PlaceholderText="Search"
+                     Grid.Column="0"
+                     MaxWidth="300"
+                     HorizontalAlignment="Left" />
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <TextBlock Text="Sort by: " Foreground="LightGray" VerticalAlignment="Center" />
+                <ComboBox x:Name="SortComboBox" SelectedIndex="0">
+                    <ComboBoxItem Content="Recently Added" />
+                    <ComboBoxItem Content="Species" />
+                    <ComboBoxItem Content="Status" />
+                </ComboBox>
+            </StackPanel>
+        </Grid>
+
+        <controls:DataGrid x:Name="LivestockDataGrid"
+                           Grid.Row="3"
+                           AutoGenerateColumns="False"
+                           CanUserSortColumns="True"
+                           IsReadOnly="True"
+                           GridLinesVisibility="Horizontal"
+                           HorizontalScrollBarVisibility="Auto">
+            <controls:DataGrid.Columns>
+                <controls:DataGridTextColumn Header="Species / Animal" Binding="{Binding Species}" Width="SizeToCells" />
+                <controls:DataGridTextColumn Header="Gender" Binding="{Binding Gender}" Width="SizeToCells" />
+                <controls:DataGridTextColumn Header="DOB (MM/DD/YYYY)" Binding="{Binding DOB}" Width="SizeToCells" />
+                <controls:DataGridTextColumn Header="Notes" Binding="{Binding Notes}" Width="*" /> <controls:DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="SizeToCells" />
+                <controls:DataGridTextColumn Header="Activity" Binding="{Binding Activity}" Width="SizeToCells" />
+            </controls:DataGrid.Columns>
+        </controls:DataGrid>
 
     </Grid>
 </Page>

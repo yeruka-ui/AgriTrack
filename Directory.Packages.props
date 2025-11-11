@@ -12,5 +12,6 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.10" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.10" />
     <PackageVersion Include="Microsoft.Extensions.Identity.Core" Version="9.0.10" />
+    <PackageVersion Include="Uno.CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.204" />
   </ItemGroup>
 </Project>
