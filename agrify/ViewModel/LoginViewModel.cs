@@ -39,8 +39,6 @@ namespace agrify.ViewModels
         [RelayCommand]
         private async Task Login()
         {
-
-
             // 1. Check for empty boxes...
             if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
             {
@@ -72,6 +70,7 @@ namespace agrify.ViewModels
                     CurrentUserService.Instance.Login(user);
                     // *** ONLY IF THE PASSWORD IS CORRECT ***
                     // Do we let them in.
+
                     NavigationRequested?.Invoke(this, EventArgs.Empty);
                 }
                 else
@@ -82,7 +81,7 @@ namespace agrify.ViewModels
             }
             catch (Exception ex)
             {
-                ErrorMessage = $"An error occurred. ...";
+                ErrorMessage = $"{ex.Message}";
                 return; // <-- STOPS HERE
             }
         }

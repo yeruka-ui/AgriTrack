@@ -19,7 +19,7 @@ namespace agrify.Data
         {
             // This connection string stays the same because
             // all the tables are in the ONE database.
-            string connectionString = @"Server=.\SQLEXPRESS;Database=agrifyDB;Trusted_Connection=True;TrustServerCertificate=True;";
+            string connectionString = @"Server=RUKABERRIE\SQLEXPRESS;Database=agrifyDB;Trusted_Connection=True;TrustServerCertificate=True;";
 
             optionsBuilder.UseSqlServer(connectionString);
         }

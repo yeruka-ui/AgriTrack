@@ -36,6 +36,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Identity.Core" />
+    <PackageReference Include="Uno.CommunityToolkit.WinUI.UI.Controls.DataGrid" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Pages\LoginPage.xaml.cs">
