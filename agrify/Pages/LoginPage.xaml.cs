@@ -1,7 +1,8 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using agrify.ViewModels; // Make sure to import your ViewModels
-using System; // Required for System.EventArgs
+using System;
+using agrify.Pages; // Required for System.EventArgs
 
 namespace agrify;
 
@@ -34,7 +35,7 @@ public sealed partial class LoginPage : Page
         // THIS is where the navigation happens!
         // We are telling the app's main "Frame" to navigate
         // to a new instance of the DashboardPage.
-        this.Frame.Navigate(typeof(DashboardPage));
+        this.Frame.Navigate(typeof(MainShell));
 
         if (ViewModel != null)
         {

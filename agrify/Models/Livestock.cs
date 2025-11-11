@@ -9,6 +9,6 @@ namespace agrify.Models
         public string TagNumber { get; set; }
         public string Breed { get; set; }
         public DateTime DateOfBirth { get; set; }
-        // ... other properties
+        // input other future properties
     }
 }
