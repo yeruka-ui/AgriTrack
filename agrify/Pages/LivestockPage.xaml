@@ -56,8 +56,8 @@
                 <TextBlock Text="ANIMAL / SPECIES" Foreground="LightGray" FontWeight="SemiBold" Margin="0,0,0,5"/>
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
                     <ComboBox x:Name="SpeciesComboBox"

@@ -5,7 +5,7 @@ public class Program
 {
     public static async Task Main(string[] args)
     {
-        App.InitializeLogging();
+     //   App.InitializeLogging();
 
         var host = UnoPlatformHostBuilder.Create()
             .App(() => new App())
