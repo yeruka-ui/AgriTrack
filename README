@@ -1,0 +1,55 @@
+--i back up every current sql table setup here under agrifyDB.
+
+--USERS TABLE
+CREATE TABLE Users (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    Username NVARCHAR(100) NOT NULL UNIQUE,
+    PasswordHash NVARCHAR(256) NOT NULL
+);
+
+DECLARE @DefaultPasswordHash NVARCHAR(256)
+SET @DefaultPasswordHash = 'AQAAAAIAAYagAAAAEPpcClwLmOPxAHwKvPXAR9k+yDffnPQE35Oy1NGoQVPhe/sAQUkGkc8NH3Q4zpYRWg=='
+
+INSERT INTO Users (Username, PasswordHash)	
+VALUES 
+('owner', @DefaultPasswordHash),
+('manager', @DefaultPasswordHash),
+('accountant', @DefaultPasswordHash);
+
+--CALENDAR TABLE
+CREATE TABLE CalendarTasks (
+Id INT PRIMARY KEY IDENTITY(1,1),
+Title NVARCHAR(200) NOT NULL,
+StartTime DATETIME2 NOT NULL,
+EndTime DATETIME2 NOT NULL,
+Notes NVARCHAR(MAX) NULL,
+IsComplete BIT NOT NULL DEFAULT 0
+);
+
+INSERT INTO CalendarTasks (Title, StartTime, EndTime, Notes, IsComplete)
+VALUES
+('Sample Task',
+GETDATE(), -- Use current time
+DATEADD(hour, 1, GETDATE()), -- Adds 1 hour to the current time
+'This task is for testing and created in SSMS.', 0);
+
+--HOLIDAYS TABLE
+CREATE TABLE Holidays (
+Id INT PRIMARY KEY IDENTITY(1,1),
+Name NVARCHAR(100) NOT NULL,
+Date DATETIME2 NOT NULL
+);
+
+--PRODUCE TABLE
+
+CREATE TABLE [Produce] (
+    [ProduceId] int NOT NULL IDENTITY(1,1),
+    [ProduceType] nvarchar(max) NOT NULL,
+    [Quantity] int NOT NULL,
+    [Weight] nvarchar(max) NOT NULL,
+    [HarvestDate] datetime2 NOT NULL,
+    [Notes] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_Produce] PRIMARY KEY ([ProduceId])
+);
+
+
