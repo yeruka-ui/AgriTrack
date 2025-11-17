@@ -1,5 +1,6 @@
 using agrify.Data;    // Add this to access the DbContext
 using agrify.Models;
+using agrify.Models.Category;
 using Microsoft.EntityFrameworkCore; // Add this for EF Core functions
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -20,20 +21,20 @@ namespace agrify.Pages
         {
             this.InitializeComponent();
 
-            // Initialize the lists, but don't populate them here anymore
+            // Initialize the lists
             ProduceList = new ObservableCollection<Produce>();
             ProduceTypeList = new ObservableCollection<string>();
 
             // Set the DataGrid and ComboBox sources
             ProduceDataGrid.ItemsSource = ProduceList;
-            ProduceTypeComboBox.ItemsSource = ProduceTypeList;
+            ProduceTypeComboBox.ItemsSource = ProduceTypeList; // Matches your example
 
             // Set default state
             ClearForm();
         }
 
         /// <summary>
-        /// NEW: Runs when the page is loaded. Fetches data from the database.
+        /// Runs when the page is loaded. Fetches data from the database.
         /// </summary>
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -41,7 +42,7 @@ namespace agrify.Pages
         }
 
         /// <summary>
-        /// NEW: Helper method to load all data from the database.
+        /// UPDATED: Helper method to load all data and categories.
         /// </summary>
         private async Task LoadDataAsync()
         {
@@ -58,26 +59,31 @@ namespace agrify.Pages
                     ProduceList.Add(produce);
                 }
 
-                // 2. Load all distinct ProduceType strings from the data
-                var allTypes = await db.Produce
-                                       .Select(p => p.ProduceType)
-                                       .Distinct()
-                                       .ToListAsync();
+                // 2. Load types from the new ItemCategories table
+                var typesFromCategories = await db.ItemCategories
+                                                  .Where(c => c.CategoryType == "Produce") // <-- Filter for "Produce"
+                                                  .Select(c => c.Name)
+                                                  .ToListAsync();
+
+                // 3. Load types from existing items (fallback)
+                var typesFromItems = await db.Produce
+                                             .Select(p => p.ProduceType)
+                                             .ToListAsync();
+
+                // 4. Combine, remove duplicates, and sort
+                var allTypes = typesFromCategories.Union(typesFromItems)
+                                                  .Distinct()
+                                                  .OrderBy(name => name);
 
                 foreach (var type in allTypes)
                 {
                     ProduceTypeList.Add(type);
                 }
             }
-
-            // (Optional) Add default types if they don't exist,
-            // so the ComboBox isn't empty on first run
-            if (!ProduceTypeList.Contains("Tomatoes")) ProduceTypeList.Add("Tomatoes");
-            if (!ProduceTypeList.Contains("Corn")) ProduceTypeList.Add("Corn");
         }
 
         /// <summary>
-        /// UPDATED: Now saves to the database.
+        /// UPDATED: Saves new/edited items to the database.
         /// </summary>
         private async void SubmitButton_Click(object sender, RoutedEventArgs e)
         {
@@ -132,7 +138,7 @@ namespace agrify.Pages
         }
 
         /// <summary>
-        /// UPDATED: Now removes from the database.
+        /// UPDATED: Removes item from the database.
         /// </summary>
         private async void RemoveButton_Click(object sender, RoutedEventArgs e)
         {
@@ -248,11 +254,9 @@ namespace agrify.Pages
         }
 
         /// <summary>
-        /// This logic is unchanged. It adds the new type to the
-        /// ComboBox. The next time the user SUBMITS, this new type
-        /// will be saved with an item and loaded automatically next time.
+        /// UPDATED: Saves the new category to the database.
         /// </summary>
-        private void SaveNewProduceTypeButton_Click(object sender, RoutedEventArgs e)
+        private async void SaveNewProduceTypeButton_Click(object sender, RoutedEventArgs e)
         {
             NewProduceTypeErrorTextBlock.Text = "";
             var newProduceType = NewProduceTypeTextBox.Text.Trim();
@@ -263,11 +267,31 @@ namespace agrify.Pages
                 return;
             }
 
+            // Check local list first
             if (ProduceTypeList.Any(s => s.Equals(newProduceType, StringComparison.OrdinalIgnoreCase)))
             {
                 NewProduceTypeErrorTextBlock.Text = "This produce type already exists.";
                 return;
             }
+
+            // --- NEW: Save to database ---
+            using (var db = new AgrifyDbContext())
+            {
+                bool exists = await db.ItemCategories
+                                      .AnyAsync(c => c.Name == newProduceType && c.CategoryType == "Produce");
+
+                if (!exists)
+                {
+                    var newCategory = new ItemCategory
+                    {
+                        Name = newProduceType,
+                        CategoryType = "Produce" // Mark this as a "Produce" type
+                    };
+                    db.ItemCategories.Add(newCategory);
+                    await db.SaveChangesAsync();
+                }
+            }
+            // --- End of new code ---
 
             ProduceTypeList.Add(newProduceType);
             ProduceTypeComboBox.SelectedItem = newProduceType;
