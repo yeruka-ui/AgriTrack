@@ -75,7 +75,7 @@ public sealed partial class MainShell : Page
             Type pageType = pageTag switch
             {
                 "dashboard" => typeof(DashboardPage),
-                //"calendar" => typeof(CalendarPage),
+                "calendar" => typeof(CalendarPage),
                 "livestock" => typeof(LivestockPage),
                "produce" => typeof(ProducePage), 
                 "supplies" => typeof(SuppliesPage),

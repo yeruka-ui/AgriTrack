@@ -29,6 +29,9 @@
     </UnoFeatures>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Assets\Icons\agrifytitle.svg" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
@@ -82,6 +85,14 @@
     <Page Update="Pages\ProducePage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\CalendarPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <UnoImage Remove="Assets\Icons\agrifytitle.svg" />
   </ItemGroup>
 
 </Project>

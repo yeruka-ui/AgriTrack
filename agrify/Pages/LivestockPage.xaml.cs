@@ -1,10 +1,8 @@
-// === 1. THESE 'using' STATEMENTS ARE NOW ALL INCLUDED ===
 using agrify.Models;            // Lets the code know what a 'Livestock' is
 using System.Collections.ObjectModel;  // Lets the code use 'ObservableCollection'
 using System.Linq; // For checking duplicates
 using System; // For StringComparison
 
-// These are from your file (and are correct for WinUI/Uno)
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -20,9 +18,7 @@ using Windows.Foundation.Collections;
 
 namespace agrify.Pages
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
+
     public sealed partial class LivestockPage : Page
     {
         // === 2. MERGED PROPERTIES ===
@@ -162,9 +158,6 @@ namespace agrify.Pages
             NewSpeciesTextBox.Text = ""; // Clear text for next time
         }
 
-        /// <summary>
-        /// Clears the error text when the user clicks the "+" button
-        /// </summary>
         private void AddSpeciesButton_Click(object sender, RoutedEventArgs e)
         {
             NewSpeciesErrorTextBlock.Text = "";

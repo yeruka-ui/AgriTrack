@@ -100,7 +100,6 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-      
         <Grid Grid.Column="0">
             <!-- 
             UPDATED:
@@ -191,10 +190,9 @@
                              Checked="Navigation_Checked"
                              Tag="sales"/>
 
-                
                 <Button x:Name="LogoutButton" 
                     VerticalAlignment="Bottom" 
-                    HorizontalAlignment="Stretch"
+                    HorizontalAlignment="Right"
                     Margin="20,0,20,20"
                     Click="LogoutButton_Click"
                     Background="Transparent"
