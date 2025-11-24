@@ -1,7 +1,4 @@
-﻿<!-- 
-  NOTE: Make sure the x:Class matches your C# file's namespace
-  This should be: x:Class="agrify.Pages.CalendarPage"
--->
+﻿
 <Page
     x:Class="agrify.Pages.CalendarPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
