@@ -9,6 +9,145 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <ScrollViewer>
+            <Grid Padding="40">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
+
+                <!-- HEADER -->
+                <TextBlock Text="Expenses &amp; Revenue"
+                       FontSize="32"
+                       FontWeight="Bold"
+                       Margin="0,0,0,20"
+                       Foreground="#0A8A46"/>
+
+                <!-- KPI BAR -->
+                <Grid Grid.Row="1" Margin="0,20,0,30">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Total Revenue -->
+                    <StackPanel Grid.Column="0" Spacing="8" Margin="0,0,10,0">
+                        <TextBlock Text="Total Revenue" Foreground="#0A8A46" FontSize="14"/>
+                        <Border Background="#0A8A46" CornerRadius="20" Padding="20,10">
+                            <TextBlock x:Name="TotalRevenueText" Text="0.00" FontSize="20" Foreground="White"
+                       HorizontalAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Monthly Profit -->
+                    <StackPanel Grid.Column="1" Spacing="8" Margin="10,0,10,0">
+                        <TextBlock Text="Monthly Profit" Foreground="#0A8A46" FontSize="14"/>
+                        <Border Background="#0A8A46" CornerRadius="20" Padding="20,10">
+                            <TextBlock x:Name="MonthlyProfitText" Text="0.00" FontSize="20" Foreground="White"
+                       HorizontalAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- ROI -->
+                    <StackPanel Grid.Column="2" Spacing="8" Margin="10,0,0,0">
+                        <TextBlock Text="Return of Investment" Foreground="#0A8A46" FontSize="14"/>
+                        <Border Background="#0A8A46" CornerRadius="20" Padding="20,10">
+                            <TextBlock x:Name="RoiText" Text="0%" FontSize="20" Foreground="White"
+                       HorizontalAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+
+                <!-- MONTHLY PROFIT & LOSS INPUTS -->
+                <TextBlock Grid.Row="2"
+                       Text="Monthly Profit &amp; Loss"
+                       FontSize="22"
+                       FontWeight="SemiBold"
+                       Foreground="#0A8A46"
+                       Margin="0,20,0,10"/>
+
+                <StackPanel Grid.Row="3" Spacing="10">
+
+                    <TextBlock Text="Enter Total Revenue:" Foreground="White"/>
+                    <TextBox x:Name="RevenueInput" PlaceholderText="0.00">
+                        <TextBox.InputScope>
+                            <InputScope>
+                                <InputScope.Names>
+                                    <InputScopeName NameValue="Number"/>
+                                </InputScope.Names>
+                            </InputScope>
+                        </TextBox.InputScope>
+                    </TextBox>
+
+
+
+                    <TextBlock Text="Enter Total Expense:" Foreground="White"/>
+                    <TextBox x:Name="ExpenseInput" PlaceholderText="0.00">
+                        <TextBox.InputScope>
+                            <InputScope>
+                                <InputScope.Names>
+                                    <InputScopeName NameValue="Number"/>
+                                </InputScope.Names>
+                            </InputScope>
+                        </TextBox.InputScope>
+                    </TextBox>
+
+                    <Button Content="CALCULATE MONTHLY PROFIT"
+                        Background="#0A8A46"
+                        Foreground="White"
+                        CornerRadius="10"
+                        Click="CalculateProfit_Click"/>
+                </StackPanel>
+
+                <!-- ROI INPUTS -->
+                <TextBlock Grid.Row="4"
+                       Text="ROI (Return of Investment)"
+                       FontSize="22"
+                       FontWeight="SemiBold"
+                       Foreground="#0A8A46"
+                       Margin="0,30,0,10"/>
+
+                <StackPanel Grid.Row="5" Spacing="10">
+
+                    <TextBlock Text="Enter Total Investment:" Foreground="White"/>
+                    <TextBox x:Name="InvestmentInput" PlaceholderText="0.00">
+                        <TextBox.InputScope>
+                            <InputScope>
+                                <InputScope.Names>
+                                    <InputScopeName NameValue="Number"/>
+                                </InputScope.Names>
+                            </InputScope>
+                        </TextBox.InputScope>
+                    </TextBox>
+
+                    <TextBlock Text="Enter Total Revenue:" Foreground="White"/>
+                    <TextBox x:Name="RevenueForRoiInput" PlaceholderText="0.00">
+                        <TextBox.InputScope>
+                            <InputScope>
+                                <InputScope.Names>
+                                    <InputScopeName NameValue="Number"/>
+                                </InputScope.Names>
+                            </InputScope>
+                        </TextBox.InputScope>
+                    </TextBox>
+
+                    <Button Content="CALCULATE ROI"
+                        Background="#0A8A46"
+                        Foreground="White"
+                        CornerRadius="10"
+                        Click="CalculateRoi_Click"/>
+                </StackPanel>
+
+
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </Page>

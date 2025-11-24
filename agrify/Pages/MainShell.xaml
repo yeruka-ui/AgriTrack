@@ -183,12 +183,13 @@
                              Tag="reports"
                              Visibility="{Binding CanSeeAllContent, Converter={StaticResource BoolToVisibilityConverter}}" />
 
-                <RadioButton x:Name="SalesButton"
-                             Content="Sales Record"
+                <RadioButton x:Name="InsightsButton"
+                             Content="Insights"
                              GroupName="Navigation"
                              Style="{StaticResource SidebarRadioButtonStyle}"
                              Checked="Navigation_Checked"
-                             Tag="sales"/>
+                             Tag="insights"
+                             Visibility="{Binding CanSeeAccountantContent, Converter={StaticResource BoolToVisibilityConverter}}" /> />
 
                 <Button x:Name="LogoutButton" 
                     VerticalAlignment="Bottom" 

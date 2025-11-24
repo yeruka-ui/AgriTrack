@@ -79,9 +79,9 @@ public sealed partial class MainShell : Page
                 "livestock" => typeof(LivestockPage),
                "produce" => typeof(ProducePage), 
                 "supplies" => typeof(SuppliesPage),
-                //"fiscal" => typeof(FiscalPage),
+                "fiscal" => typeof(FiscalPage),
                 //"reports" => typeof(ReportsPage),
-                //"sales" => typeof(SalesRecordPage), // Assuming you create SalesRecordPage
+                "insights" => typeof(InsightsPage),
                 _ => typeof(DashboardPage) // Default
             };
 
