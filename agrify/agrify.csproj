@@ -93,6 +93,9 @@
   </ItemGroup>
   <ItemGroup>
     <UnoImage Remove="Assets\Icons\agrifytitle.svg" />
+    <Page Update="Pages\InsightsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
 </Project>

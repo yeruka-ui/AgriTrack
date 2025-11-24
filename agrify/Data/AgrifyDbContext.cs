@@ -2,6 +2,7 @@ using agrify.Models;
 using agrify.Models.Category;
 using Microsoft.EntityFrameworkCore;
 using Windows.System;
+using agrify.Models.Analytics;
 
 namespace agrify.Data
 {
@@ -13,12 +14,15 @@ namespace agrify.Data
         }
 
         public AgrifyDbContext() { }
-       
         // login table
         public DbSet<agrify.Models.User> Users { get; set; }
-        public DbSet<agrify.Models.Livestock> Livestock { get; set; }
+        public DbSet<Livestock> Livestock { get; set; }
 
         public DbSet<Produce> Produce { get; set; }
+
+        public DbSet<Expenses> Expenses { get; set; }
+        public DbSet<Investments> Investments { get; set; }
+        public DbSet<Revenues> Revenues { get; set; }
 
         public DbSet<Supplies> Supplies { get; set; }
 

@@ -9,12 +9,10 @@
 
     <Application.Resources>
         <ResourceDictionary>
-        
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
                 <um:MaterialColors/>
                 <um:MaterialResources/>
-
                 <ResourceDictionary Source="ms-appx:///Styles/ColorsOverrideLogin.xaml" />
                 <ResourceDictionary Source="ms-appx:///Styles/FontsOverrideLogin.xaml" />
             </ResourceDictionary.MergedDictionaries>

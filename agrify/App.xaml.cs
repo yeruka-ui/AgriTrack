@@ -8,12 +8,13 @@ namespace agrify;
 
 public sealed partial class App : Application
 {
+
     public App()
     {
         this.InitializeComponent();
     }
 
-    protected Window? MainWindow { get; private set; }
+    public Window? MainWindow { get; private set; }
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {

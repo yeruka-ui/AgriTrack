@@ -23,9 +23,22 @@
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements />
     </Application>
+          <!-- ADD THE EXTENSIONS HERE (inside <Application>) -->
+          <Extensions>
+              <uap:Extension Category="windows.fileTypeAssociation">
+                  <uap:FileTypeAssociation Name="csv">
+                      <uap:SupportedFileTypes>
+                          <uap:FileType>.csv</uap:FileType>
+                      </uap:SupportedFileTypes>
+                  </uap:FileTypeAssociation>
+              </uap:Extension>
+          </Extensions>      
   </Applications>
 
   <Capabilities>
-    <rescap:Capability Name="runFullTrust" />
+    <rescap:Capability Name="runFullTrust"/>
+      <rescap:Capability Name="broadFileSystemAccess" />
+      <Capability Name="documentsLibrary" />
   </Capabilities>
 </Package>
+
