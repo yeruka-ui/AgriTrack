@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     mc:Ignorable="d"
-    Background="#FF2D2D30">
+    Background="White">
 
     <Grid Padding="48">
         <Grid.RowDefinitions>
@@ -28,176 +28,307 @@
         <!-- Row 0: "INPUT INFORMATION" Title -->
         <TextBlock Text="INPUT INFORMATION"
                    Grid.Row="0"
-                   Foreground="White"
+                   Foreground="Black"
                    FontSize="16"
-                   FontWeight="Bold"
+                   FontWeight="SemiBold"
+                   FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
                    Margin="0,-30,0,10"/>
 
         <!-- Row 1: Your original "snug" layout -->
-        <Grid Grid.Row="1" Margin="0,0,0,20">
-            <Grid.ColumnDefinitions>
-                <!-- Kept your original column definitions -->
-                <ColumnDefinition Width="2*" MinWidth="180" />
-                <!-- Species -->
-                <ColumnDefinition Width="1*" MinWidth="120" />
-                <!-- Weight -->
-                <ColumnDefinition Width="1.5*" MinWidth="150" />
-                <!-- DOB -->
-                <ColumnDefinition Width="1*" MinWidth="100" />
-                <!-- Gender -->
-                <ColumnDefinition Width="1.5*" MinWidth="140" />
-                <!-- Status -->
-                <ColumnDefinition Width="1*" MinWidth="100" />
-                <!-- Activity -->
-            </Grid.ColumnDefinitions>
+        <Border Grid.Row="1" 
+                Margin="0,0,0,20"
+                Background="White"
+                CornerRadius="12"
+                Padding="20"
+                BorderBrush="#E0E0E0"
+                BorderThickness="1">
+            <Border.Shadow>
+                <ThemeShadow />
+            </Border.Shadow>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <!-- Kept your original column definitions -->
+                    <ColumnDefinition Width="2*" MinWidth="180" />
+                    <!-- Species -->
+                    <ColumnDefinition Width="1*" MinWidth="120" />
+                    <!-- Weight -->
+                    <ColumnDefinition Width="1.5*" MinWidth="150" />
+                    <!-- DOB -->
+                    <ColumnDefinition Width="1*" MinWidth="100" />
+                    <!-- Gender -->
+                    <ColumnDefinition Width="1.5*" MinWidth="140" />
+                    <!-- Status -->
+                    <ColumnDefinition Width="1*" MinWidth="100" />
+                    <!-- Activity -->
+                </Grid.ColumnDefinitions>
 
-            <!-- Column 0: Species ComboBox -->
-            <StackPanel Grid.Column="0" Margin="0,0,10,0">
-                <TextBlock Text="ANIMAL / SPECIES" Foreground="LightGray" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+                <!-- Column 0: Species ComboBox -->
+                <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                    <TextBlock Text="ANIMAL / SPECIES" 
+                               Foreground="#666666" 
+                               FontWeight="SemiBold"
+                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
+                               Margin="0,0,0,5"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                    <ComboBox x:Name="SpeciesComboBox"
-                              Grid.Column="0"
-                              Background="#FFD9FFD9"
-                              HorizontalAlignment="Stretch"
-                              PlaceholderText="Select Species..." />
+                        <ComboBox x:Name="SpeciesComboBox"
+                                  Grid.Column="0"
+                                  Background="#EAFFCE"
+                                  HorizontalAlignment="Stretch"
+                                  FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
+                                  PlaceholderText="Select Species..." />
 
-                    <Button x:Name="AddSpeciesButton"
-                            Grid.Column="1"
-                            Content="+"
-                            FontWeight="Bold"
-                            Margin="5,0,0,0"
-                            Click="AddSpeciesButton_Click">
-                        <Button.Flyout>
-                            <Flyout x:Name="AddSpeciesFlyout" Placement="Bottom">
-                                <StackPanel Spacing="10" Width="250">
-                                    <TextBlock Text="Add New Species" FontWeight="Bold" />
-                                    <TextBox x:Name="NewSpeciesTextBox" PlaceholderText="e.g., Sheep" />
-                                    <TextBlock x:Name="NewSpeciesErrorTextBlock" Foreground="Red" TextWrapping="Wrap" />
-                                    <Button x:Name="SaveNewSpeciesButton" Content="Save" Click="SaveNewSpeciesButton_Click" HorizontalAlignment="Stretch" />
-                                </StackPanel>
-                            </Flyout>
-                        </Button.Flyout>
-                    </Button>
-                </Grid>
-            </StackPanel>
+                        <Button x:Name="AddSpeciesButton"
+                                Grid.Column="1"
+                                Content="+"
+                                FontWeight="Bold"
+                                FontFamily="ms-appx:///Assets/NewFolder/Poppins-Bold.ttf#Poppins"
+                                Background="#8DC63F"
+                                Foreground="White"
+                                Margin="5,0,0,0"
+                                Click="AddSpeciesButton_Click">
+                            <Button.Flyout>
+                                <Flyout x:Name="AddSpeciesFlyout" Placement="Bottom">
+                                    <StackPanel Spacing="10" Width="250">
+                                        <TextBlock Text="Add New Species" 
+                                                   FontWeight="SemiBold"
+                                                   FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"/>
+                                        <TextBox x:Name="NewSpeciesTextBox" 
+                                                 PlaceholderText="e.g., Sheep"
+                                                 FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
+                                        <TextBlock x:Name="NewSpeciesErrorTextBlock" 
+                                                   Foreground="Red" 
+                                                   TextWrapping="Wrap"
+                                                   FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
+                                        <Button x:Name="SaveNewSpeciesButton" 
+                                                Content="Save" 
+                                                Click="SaveNewSpeciesButton_Click" 
+                                                HorizontalAlignment="Stretch"
+                                                Background="#8DC63F"
+                                                Foreground="White"
+                                                FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"/>
+                                    </StackPanel>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
+                    </Grid>
+                </StackPanel>
 
-            <!-- Column 1: Weight -->
-            <StackPanel Grid.Column="1" Margin="10,0,10,0">
-                <TextBlock Text="WEIGHT (KG)" Foreground="LightGray" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                <TextBox x:Name="WeightTextBox" PlaceholderText="Specify weight..." Background="#FFD9FFD9" />
-            </StackPanel>
+                <!-- Column 1: Weight -->
+                <StackPanel Grid.Column="1" Margin="10,0,10,0">
+                    <TextBlock Text="WEIGHT (KG)" 
+                               Foreground="#666666" 
+                               FontWeight="SemiBold"
+                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
+                               Margin="0,0,0,5"/>
+                    <TextBox x:Name="WeightTextBox" 
+                             PlaceholderText="Specify weight..." 
+                             Background="#EAFFCE"
+                             FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
+                </StackPanel>
 
-            <!-- Column 2: DOB -->
-            <StackPanel Grid.Column="2" Margin="10,0,10,0">
-                <TextBlock Text="DATE OF BIRTH:" Foreground="LightGray" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                <DatePicker x:Name="DobDatePicker" Background="#FFD9FFD9" />
-            </StackPanel>
+                <!-- Column 2: DOB -->
+                <StackPanel Grid.Column="2" Margin="10,0,10,0">
+                    <TextBlock Text="DATE OF BIRTH:" 
+                               Foreground="#666666" 
+                               FontWeight="SemiBold"
+                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
+                               Margin="0,0,0,5"/>
+                    <DatePicker x:Name="DobDatePicker" 
+                                Background="#EAFFCE"
+                                FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
+                </StackPanel>
 
-            <!-- Column 3: Gender -->
-            <StackPanel Grid.Column="3" Margin="10,0,10,0">
-                <TextBlock Text="GENDER" Foreground="LightGray" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                <RadioButton x:Name="GenderFemaleRadioButton" Content="Female" Foreground="White" GroupName="Gender" />
-                <RadioButton x:Name="GenderMaleRadioButton" Content="Male" Foreground="White" GroupName="Gender" IsChecked="True" />
-            </StackPanel>
+                <!-- Column 3: Gender -->
+                <StackPanel Grid.Column="3" Margin="10,0,10,0">
+                    <TextBlock Text="GENDER" 
+                               Foreground="#666666" 
+                               FontWeight="SemiBold"
+                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
+                               Margin="0,0,0,5"/>
+                    <RadioButton x:Name="GenderFemaleRadioButton" 
+                                 Content="Female" 
+                                 Foreground="Black"
+                                 FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
+                                 GroupName="Gender" />
+                    <RadioButton x:Name="GenderMaleRadioButton" 
+                                 Content="Male" 
+                                 Foreground="Black"
+                                 FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
+                                 GroupName="Gender" 
+                                 IsChecked="True" />
+                </StackPanel>
 
-            <!-- Column 4: Status -->
-            <StackPanel Grid.Column="4" Margin="10,0,10,0">
-                <TextBlock Text="STATUS" Foreground="LightGray" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                <RadioButton x:Name="StatusSoldRadioButton" Content="Sold" Foreground="White" GroupName="Status" />
-                <RadioButton x:Name="StatusTreatmentRadioButton" Content="Under Treatment" Foreground="White" GroupName="Status" />
-                <RadioButton x:Name="StatusRecoveredRadioButton" Content="Recovered" Foreground="White" GroupName="Status" IsChecked="True" />
-            </StackPanel>
+                <!-- Column 4: Status -->
+                <StackPanel Grid.Column="4" Margin="10,0,10,0">
+                    <TextBlock Text="STATUS" 
+                               Foreground="#666666" 
+                               FontWeight="SemiBold"
+                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
+                               Margin="0,0,0,5"/>
+                    <RadioButton x:Name="StatusSoldRadioButton" 
+                                 Content="Sold" 
+                                 Foreground="Black"
+                                 FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
+                                 GroupName="Status" />
+                    <RadioButton x:Name="StatusTreatmentRadioButton" 
+                                 Content="Under Treatment" 
+                                 Foreground="Black"
+                                 FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
+                                 GroupName="Status" />
+                    <RadioButton x:Name="StatusRecoveredRadioButton" 
+                                 Content="Recovered" 
+                                 Foreground="Black"
+                                 FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
+                                 GroupName="Status" 
+                                 IsChecked="True" />
+                </StackPanel>
 
-            <!-- Column 5: Activity -->
-            <StackPanel Grid.Column="5" Margin="10,0,0,0">
-                <TextBlock Text="ACTIVITY" Foreground="LightGray" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                <RadioButton x:Name="ActivityActiveRadioButton" Content="Active" Foreground="White" GroupName="Activity" IsChecked="True" />
-                <RadioButton x:Name="ActivityInactiveRadioButton" Content="Inactive" Foreground="White" GroupName="Activity" />
-            </StackPanel>
-
-            <!-- Submit Button was removed from here to go with the Notes field -->
-
-        </Grid>
+                <!-- Column 5: Activity -->
+                <StackPanel Grid.Column="5" Margin="10,0,0,0">
+                    <TextBlock Text="ACTIVITY" 
+                               Foreground="#666666" 
+                               FontWeight="SemiBold"
+                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
+                               Margin="0,0,0,5"/>
+                    <RadioButton x:Name="ActivityActiveRadioButton" 
+                                 Content="Active" 
+                                 Foreground="Black"
+                                 FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
+                                 GroupName="Activity" 
+                                 IsChecked="True" />
+                    <RadioButton x:Name="ActivityInactiveRadioButton" 
+                                 Content="Inactive" 
+                                 Foreground="Black"
+                                 FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
+                                 GroupName="Activity" />
+                </StackPanel>
+            </Grid>
+        </Border>
 
         <!-- Row 2: NEW Row for Notes and Submit Button -->
-        <Grid Grid.Row="2" Margin="0,0,0,40">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+        <Border Grid.Row="2" 
+                Margin="0,0,0,40"
+                Background="White"
+                CornerRadius="12"
+                Padding="20"
+                BorderBrush="#E0E0E0"
+                BorderThickness="1">
+            <Border.Shadow>
+                <ThemeShadow />
+            </Border.Shadow>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Column="0" Margin="0,0,20,0">
-                <TextBlock Text="NOTES (OPTIONAL)" Foreground="LightGray" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                <TextBox MinWidth="500" HorizontalAlignment="Left" x:Name="NotesTextBox"
-                         PlaceholderText="Add any notes here..."
-                         Background="#FFD9FFD9"
-                         Height="90"
-                         AcceptsReturn="True"
-                         TextWrapping="Wrap"
-                         ScrollViewer.VerticalScrollBarVisibility="Auto" />
-            </StackPanel>
+                <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                    <TextBlock Text="NOTES (OPTIONAL)" 
+                               Foreground="#666666" 
+                               FontWeight="SemiBold"
+                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
+                               Margin="0,0,0,5"/>
+                    <TextBox MinWidth="500" 
+                             HorizontalAlignment="Left" 
+                             x:Name="NotesTextBox"
+                             PlaceholderText="Add any notes here..."
+                             Background="#EAFFCE"
+                             FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
+                             Height="90"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                </StackPanel>
 
-            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10" VerticalAlignment="Bottom">
-                <Button x:Name="SubmitButton"
-                        Content="SUBMIT"
-                        Width="120"
-                        Background="#FF006400"
-                        Foreground="White"
-                        FontWeight="Bold"
-                        Click="SubmitButton_Click" />
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10" VerticalAlignment="Bottom">
+                    <Button x:Name="SubmitButton"
+                            Content="SUBMIT"
+                            Width="120"
+                            Background="#8DC63F"
+                            Foreground="White"
+                            FontWeight="SemiBold"
+                            FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
+                            CornerRadius="8"
+                            Click="SubmitButton_Click">
+                        <Button.Shadow>
+                            <ThemeShadow />
+                        </Button.Shadow>
+                    </Button>
 
-                <Button x:Name="EditButton"
-                        Content="EDIT"
-                        Width="90"
-                        Background="#FFB8860B" 
-                        Foreground="White"
-                        FontWeight="Bold"
-                        Click="EditButton_Click" />
+                    <Button x:Name="EditButton"
+                            Content="EDIT"
+                            Width="90"
+                            Background="#FFB8860B" 
+                            Foreground="White"
+                            FontWeight="SemiBold"
+                            FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
+                            CornerRadius="8"
+                            Click="EditButton_Click">
+                        <Button.Shadow>
+                            <ThemeShadow />
+                        </Button.Shadow>
+                    </Button>
 
-                <Button x:Name="RemoveButton"
-                        Content="REMOVE"
-                        Width="90"
-                        Background="#FFB22222"
-                        Foreground="White"
-                        FontWeight="Bold"
-                        Click="RemoveButton_Click" />
+                    <Button x:Name="RemoveButton"
+                            Content="REMOVE"
+                            Width="90"
+                            Background="#FFB22222"
+                            Foreground="White"
+                            FontWeight="SemiBold"
+                            FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
+                            CornerRadius="8"
+                            Click="RemoveButton_Click">
+                        <Button.Shadow>
+                            <ThemeShadow />
+                        </Button.Shadow>
+                    </Button>
 
-                <Button x:Name="CancelButton"
-                        Content="CANCEL"
-                        Width="90"
-                        Background="#FF696969"
-                        Foreground="White"
-                        FontWeight="Bold"
-                        Click="CancelButton_Click"
-                        Visibility="Collapsed"/>
-            </StackPanel>
+                    <Button x:Name="CancelButton"
+                            Content="CANCEL"
+                            Width="90"
+                            Background="#FF696969"
+                            Foreground="White"
+                            FontWeight="SemiBold"
+                            FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
+                            CornerRadius="8"
+                            Click="CancelButton_Click"
+                            Visibility="Collapsed">
+                        <Button.Shadow>
+                            <ThemeShadow />
+                        </Button.Shadow>
+                    </Button>
+                </StackPanel>
 
-            <TextBlock x:Name="ErrorMessageTextBlock"
-                        Grid.Column="1"
-                        VerticalAlignment="Top"
-                        Margin="0,-25,0,0"
-                        Foreground="Red"
-                        FontWeight="Bold"
-                        TextWrapping="Wrap"
-                        MaxWidth="300" 
-                        HorizontalAlignment="Right"/>
-        </Grid>
+                <TextBlock x:Name="ErrorMessageTextBlock"
+                            Grid.Column="1"
+                            VerticalAlignment="Top"
+                            Margin="0,-25,0,0"
+                            Foreground="Red"
+                            FontWeight="SemiBold"
+                            FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
+                            TextWrapping="Wrap"
+                            MaxWidth="300" 
+                            HorizontalAlignment="Right"/>
+            </Grid>
+        </Border>
 
         <!-- Row 3: "LIVESTOCK DATA" Title -->
         <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,0,0,10">
             <TextBlock Text="LIVESTOCK DATA"
-                       Foreground="White"
+                       Foreground="Black"
                        FontSize="16"
-                       FontWeight="Bold"
+                       FontWeight="SemiBold"
+                       FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
                        VerticalAlignment="Bottom"/>
             <TextBlock Text="Livestock"
-                       Foreground="LightGray"
+                       Foreground="#666666"
                        FontSize="14"
+                       FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
                        Margin="10,0,0,0"
                        VerticalAlignment="Bottom"/>
         </StackPanel>
@@ -213,11 +344,17 @@
                      PlaceholderText="Search"
                      Grid.Column="0"
                      MaxWidth="300"
+                     FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
                      HorizontalAlignment="Left" />
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                <TextBlock Text="Sort by: " Foreground="LightGray" VerticalAlignment="Center" />
-                <ComboBox x:Name="SortComboBox" SelectedIndex="0">
+                <TextBlock Text="Sort by: " 
+                           Foreground="#666666" 
+                           VerticalAlignment="Center"
+                           FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
+                <ComboBox x:Name="SortComboBox" 
+                          SelectedIndex="0"
+                          FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins">
                     <ComboBoxItem Content="Recently Added" />
                     <ComboBoxItem Content="Species" />
                     <ComboBoxItem Content="Status" />
@@ -226,23 +363,33 @@
         </Grid>
 
         <!-- Row 5: DataGrid -->
-        <controls:DataGrid x:Name="LivestockDataGrid"
-                           Grid.Row="5"
-                           AutoGenerateColumns="False"
-                           CanUserSortColumns="True"
-                           IsReadOnly="True"
-                           GridLinesVisibility="Horizontal"
-                           HorizontalScrollBarVisibility="Auto">
+        <Border Grid.Row="5"
+                Background="White"
+                CornerRadius="12"
+                BorderBrush="#E0E0E0"
+                BorderThickness="1"
+                Padding="10">
+            <Border.Shadow>
+                <ThemeShadow />
+            </Border.Shadow>
+            <controls:DataGrid x:Name="LivestockDataGrid"
+                               AutoGenerateColumns="False"
+                               CanUserSortColumns="True"
+                               IsReadOnly="True"
+                               GridLinesVisibility="Horizontal"
+                               HorizontalScrollBarVisibility="Auto"
+                               Background="White">
 
-            <controls:DataGrid.Columns>
-                <controls:DataGridTextColumn Header="Species / Animal" Binding="{Binding Species}" Width="Auto" />
-                <controls:DataGridTextColumn Header="Gender" Binding="{Binding Gender}" Width="Auto" />
-                <controls:DataGridTextColumn Header="DOB (MM/DD/YYYY)" Binding="{Binding DOB}" Width="Auto" />
-                <controls:DataGridTextColumn Header="Notes" Binding="{Binding Notes}" Width="*" />
-                <controls:DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="Auto" />
-                <controls:DataGridTextColumn Header="Activity" Binding="{Binding Activity}" Width="Auto" />
-            </controls:DataGrid.Columns>
-        </controls:DataGrid>
+                <controls:DataGrid.Columns>
+                    <controls:DataGridTextColumn Header="Species / Animal" Binding="{Binding Species}" Width="Auto" />
+                    <controls:DataGridTextColumn Header="Gender" Binding="{Binding Gender}" Width="Auto" />
+                    <controls:DataGridTextColumn Header="DOB (MM/DD/YYYY)" Binding="{Binding DOB}" Width="Auto" />
+                    <controls:DataGridTextColumn Header="Notes" Binding="{Binding Notes}" Width="*" />
+                    <controls:DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="Auto" />
+                    <controls:DataGridTextColumn Header="Activity" Binding="{Binding Activity}" Width="Auto" />
+                </controls:DataGrid.Columns>
+            </controls:DataGrid>
+        </Border>
 
     </Grid>
 </Page>
