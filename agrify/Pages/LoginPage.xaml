@@ -9,16 +9,10 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:um="using:Uno.Material"
     xmlns:ut="using:Uno.Themes"
-    xmlns:uen="using:Uno.Extensions.Navigation.UI"
-    xmlns:uer="using:Uno.Extensions.Reactive.UI"
     xmlns:local="using:agrify"
     xmlns:vm="using:agrify.ViewModels"
     mc:Ignorable="d">
 
-    <!--
-    This sets up the connection between your View (XAML)
-    and your ViewModel (C#).
-    -->
     <Page.DataContext>
         <vm:LoginViewModel />
     </Page.DataContext>
@@ -42,7 +36,6 @@
     </Page.Resources>
 
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto">
-        <!-- ... your gradient background ... -->
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                 <GradientStop Color="#8DC63F" Offset="0" />
@@ -56,7 +49,6 @@
 
             <Grid Height="600" Width="800" >
 
-                <!-- ... your white rectangle, border, image, title ... -->
                 <Rectangle Fill="White" RadiusX="56" RadiusY="56"
                     utu:AutoLayout.IsIndependentLayout="True"
                     Margin="167,94,0,0"
@@ -67,23 +59,22 @@
                         Margin="487,127,0,0"
                         VerticalAlignment="Top" HorizontalAlignment="Left"
                         Width="286" Height="383" CornerRadius="46">
-                    <Image Source="[https://picsum.photos/286/383](https://picsum.photos/286/383)" />
+                    <Image Source="ms-appx:///Assets/Icons/image.png" />
                 </Border>
 
-                <utu:AutoLayout Width="235" CounterAxisAlignment="Start"
+                <!-- AGRIFY TITLE -->
+                <utu:AutoLayout Margin="210,122,0,0" Width="235" CounterAxisAlignment="Start"
                                 utu:AutoLayout.IsIndependentLayout="True"
-                                Margin="220,137,0,0"
                                 VerticalAlignment="Top" HorizontalAlignment="Left"
-                                Height="64">
-                    <TextBlock FontSize="54" Text="AGRI.FY"
-                                FontWeight="Bold" Foreground="DarkSeaGreen"
-                                utu:AutoLayout.CounterAlignment="Start" />
+                                Height="70">
+                    <Image Source="ms-appx:///Assets/Icons/agrifytitle.png"
+                           Stretch="Uniform" />
                 </utu:AutoLayout>
 
-                <!-- ... your USERNAME and PASSWORD fields ... -->
+                <!-- USERNAME -->
                 <utu:AutoLayout CounterAxisAlignment="Start"
                                 utu:AutoLayout.IsIndependentLayout="True"
-                                Margin="220,271,0,0"
+                                Margin="220,281,0,0"
                                 VerticalAlignment="Top" HorizontalAlignment="Left"
                                 Width="241" Height="42">
                     <TextBox    
@@ -92,47 +83,48 @@
                         Padding="14,10,0,0" 
                         PlaceholderText="USERNAME"
                         Foreground="Black"
+                        PlaceholderForeground="#708751"
                         Background="#EAFFCE"
                         BorderThickness="0"
                         VerticalAlignment="Top"
                         Text="{Binding Username, Mode=TwoWay}"
+                        FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
                         HorizontalAlignment="Left" />
                 </utu:AutoLayout>
 
+                <!-- PASSWORD -->
                 <utu:AutoLayout CounterAxisAlignment="Start"
-                                utu:AutoLayout.IsIndependentLayout="True"
-                                Margin="220,328,0,0"
-                                VerticalAlignment="Top" HorizontalAlignment="Left"
-                                Width="241" Height="42">
+                utu:AutoLayout.IsIndependentLayout="True"
+                Margin="220,338,0,0"
+                VerticalAlignment="Top" HorizontalAlignment="Left"
+                Width="241" Height="42">
                     <PasswordBox Background="#EAFFCE" 
-                                utu:AutoLayout.IsIndependentLayout="True"
-                                Width="241" Height="42"
-                                Padding="14,10,0,0"
-                                PlaceholderText="PASSWORD"
-                                Foreground="Black"
-                                PlaceholderForeground="Black"
-                                BorderThickness="0"
-                                VerticalAlignment="Top"
-                                Password="{Binding Password, Mode=TwoWay}"
-                                HorizontalAlignment="Left" />
+                Width="241" Height="42"
+                Padding="14,10,0,0"
+                PlaceholderText="PASSWORD"
+                Foreground="Black"
+                PlaceholderForeground="#708751"
+                BorderThickness="0"
+                VerticalAlignment="Top"
+                Password="{Binding Password, Mode=TwoWay}"
+                FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
+                HorizontalAlignment="Left" />
                 </utu:AutoLayout>
 
+                <!-- ERROR MESSAGE -->
                 <TextBlock 
-    Text="{Binding ErrorMessage}"
-    Foreground="Red"
-    FontWeight="Bold"
-    VerticalAlignment="Top"
-    HorizontalAlignment="Left"
-    Margin="220,375,0,0"
-    TextWrapping="Wrap"
-    Width="241"
-    utu:AutoLayout.IsIndependentLayout="True" />
-                <!-- 
-                THIS IS THE KEY PART!
-                We bind the button's Command to the "LoginCommand"
-                we created in our ViewModel.
-                (I removed x:Name, as it's not needed for MVVM)
-                -->
+                    Text="{Binding ErrorMessage}"
+                    Foreground="Red"
+                    FontWeight="Bold"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Left"
+                    Margin="220,375,0,0"
+                    TextWrapping="Wrap"
+                    Width="241"
+                    FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
+                    utu:AutoLayout.IsIndependentLayout="True" />
+
+                <!-- LOGIN BUTTON -->
                 <Button Command="{Binding LoginCommand}"
                         Width="241"
                         Height="42"
@@ -140,6 +132,7 @@
                         FontWeight="SemiBold"
                         Foreground="White"
                         BorderThickness="0"
+                        FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
                         utu:AutoLayout.IsIndependentLayout="True"
                         VerticalAlignment="Top"
                         HorizontalAlignment="Left"
@@ -148,23 +141,32 @@
                         <ControlTemplate TargetType="Button">
                             <Grid x:Name="RootGrid" CornerRadius="15">
                                 <Grid.Background>
-                                    <SolidColorBrush x:Name="ButtonBackgroundBrush" Color="#006F31"/>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                        <GradientStop Color="#66BB6A" Offset="0" />
+                                        <GradientStop Color="#388E3C" Offset="1" />
+                                    </LinearGradientBrush>
                                 </Grid.Background>
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <ContentPresenter HorizontalAlignment="Center" 
+                                                 VerticalAlignment="Center"
+                                                 ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                 Content="{TemplateBinding Content}"/>
                             </Grid>
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
 
-                <!-- description -->
-                <TextBlock FontSize="11" TextAlignment="Justify" TextWrapping="Wrap"
+                <!-- DESCRIPTION -->
+                <TextBlock FontSize="11" 
+                           TextAlignment="Justify" 
+                           TextWrapping="Wrap"
                            Text="A digital farm management system that simplifies livestock and crop operations by centralizing records, finances, and analytics to boost efficiency and profitability."
                            utu:AutoLayout.IsIndependentLayout="True"
                            Margin="218,205,0,0"
                            VerticalAlignment="Top"
                            HorizontalAlignment="Left"
                            Width="245"
-                           Foreground="Black" />
+                           Foreground="Black"
+                           FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins" />
             </Grid>
         </Viewbox>
     </Grid>
