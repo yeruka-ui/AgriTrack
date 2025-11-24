@@ -22,7 +22,5 @@ namespace agrify.Models
         public string Activity { get; set; } = string.Empty;
         public string Notes { get; set; } = string.Empty;
 
-        // We will no longer use the "DOB" (string) property,
-        // we will use your "DateOfBirth" (DateTime) property instead.
     }
 }

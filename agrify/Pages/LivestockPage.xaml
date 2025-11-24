@@ -128,9 +128,7 @@
         <Grid Grid.Row="2" Margin="0,0,0,40">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <!-- Notes field will take up available space -->
                 <ColumnDefinition Width="Auto" />
-                <!-- Submit button will be auto-sized -->
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Column="0" Margin="0,0,20,0">
@@ -144,20 +142,50 @@
                          ScrollViewer.VerticalScrollBarVisibility="Auto" />
             </StackPanel>
 
-            <StackPanel Grid.Column="1" Spacing="10" VerticalAlignment="Bottom">
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10" VerticalAlignment="Bottom">
                 <Button x:Name="SubmitButton"
                         Content="SUBMIT"
-                        Width="200"
+                        Width="120"
                         Background="#FF006400"
                         Foreground="White"
                         FontWeight="Bold"
                         Click="SubmitButton_Click" />
-                <TextBlock x:Name="ErrorMessageTextBlock"
-                           Foreground="Red"
-                           FontWeight="Bold"
-                           TextWrapping="Wrap"
-                           MaxWidth="200" />
+
+                <Button x:Name="EditButton"
+                        Content="EDIT"
+                        Width="90"
+                        Background="#FFB8860B" 
+                        Foreground="White"
+                        FontWeight="Bold"
+                        Click="EditButton_Click" />
+
+                <Button x:Name="RemoveButton"
+                        Content="REMOVE"
+                        Width="90"
+                        Background="#FFB22222"
+                        Foreground="White"
+                        FontWeight="Bold"
+                        Click="RemoveButton_Click" />
+
+                <Button x:Name="CancelButton"
+                        Content="CANCEL"
+                        Width="90"
+                        Background="#FF696969"
+                        Foreground="White"
+                        FontWeight="Bold"
+                        Click="CancelButton_Click"
+                        Visibility="Collapsed"/>
             </StackPanel>
+
+            <TextBlock x:Name="ErrorMessageTextBlock"
+                        Grid.Column="1"
+                        VerticalAlignment="Top"
+                        Margin="0,-25,0,0"
+                        Foreground="Red"
+                        FontWeight="Bold"
+                        TextWrapping="Wrap"
+                        MaxWidth="300" 
+                        HorizontalAlignment="Right"/>
         </Grid>
 
         <!-- Row 3: "LIVESTOCK DATA" Title -->
