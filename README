@@ -53,3 +53,42 @@ CREATE TABLE [Produce] (
 );
 
 
+-- LIVESTOKC TABLE
+CREATE TABLE [dbo].[Livestock] (
+    [Id] INT IDENTITY(1,1) NOT NULL,
+    [TagNumber] NVARCHAR(MAX) NULL,
+    [Breed] NVARCHAR(MAX) NULL,
+    [DateOfBirth] DATETIME2 NOT NULL,
+    [Species] NVARCHAR(MAX) NULL,
+    [Weight] NVARCHAR(MAX) NULL,
+    [Gender] NVARCHAR(MAX) NULL,
+    [Status] NVARCHAR(MAX) NULL,
+    [Activity] NVARCHAR(MAX) NULL,
+    [Notes] NVARCHAR(MAX) NULL,
+    CONSTRAINT [PK_Livestock] PRIMARY KEY ([Id])
+);
+GO
+
+
+-- Create Revenues Table
+CREATE TABLE Revenues (
+    RevenueID INT PRIMARY KEY IDENTITY(1,1),
+    Amount FLOAT NOT NULL,
+    Date DATE NOT NULL
+);
+
+-- Create Expenses Table
+CREATE TABLE Expenses (
+    ExpenseID INT PRIMARY KEY IDENTITY(1,1),
+    Amount FLOAT NOT NULL,
+    Date DATE NOT NULL
+);
+
+-- Create Investments Table
+CREATE TABLE Investments (
+    InvestmentID INT PRIMARY KEY IDENTITY(1,1),
+    Amount FLOAT NOT NULL,
+    Date DATE NOT NULL
+);
+
+
