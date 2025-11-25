@@ -292,7 +292,7 @@
                 <Border.Shadow>
                     <ThemeShadow />
                 </Border.Shadow>
-                <controls:DataGrid ItemsSource="{Binding RecentProductionList}"
+                <controls:DataGrid BorderBrush="AntiqueWhite" Foreground="#3B8C20" ItemsSource="{Binding RecentProductionList}"
                                    AutoGenerateColumns="False"
                                    IsReadOnly="True"
                                    GridLinesVisibility="Horizontal"

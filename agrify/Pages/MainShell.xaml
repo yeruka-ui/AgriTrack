@@ -142,12 +142,12 @@
                                  Visibility="{Binding CanSeeManagerContent, Converter={StaticResource BoolToVisibilityConverter}}" />
 
                     <TextBlock Text="Analytics" 
-                               Margin="20,15,0,5" 
+                               Margin="20,45,0,5" 
                                FontWeight="SemiBold" 
                                FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
                                Foreground="#CCFFFFFF" />
 
-                    <RadioButton x:Name="ExpensesButton"
+                    <RadioButton Foreground="White" x:Name="ExpensesButton"
                                  Content="Expenses &amp; Revenue"
                                  GroupName="Navigation"
                                  Style="{StaticResource SidebarRadioButtonStyle}"

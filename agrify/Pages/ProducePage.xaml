@@ -8,25 +8,19 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     mc:Ignorable="d"
     Loaded="Page_Loaded"
+    RequestedTheme="Light"
     Background="White">
 
     <Grid Padding="48">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <!-- Input Title -->
             <RowDefinition Height="Auto" />
-            <!-- Input Row 1 -->
             <RowDefinition Height="Auto" />
-            <!-- Input Row 2 (Notes/Submit) -->
             <RowDefinition Height="Auto" />
-            <!-- DataGrid Title -->
             <RowDefinition Height="Auto" />
-            <!-- Search/Sort -->
             <RowDefinition Height="*" />
-            <!-- DataGrid -->
         </Grid.RowDefinitions>
 
-        <!-- Row 0: "INPUT INFORMATION" Title -->
         <TextBlock Text="INPUT INFORMATION"
                    Grid.Row="0"
                    Foreground="Black"
@@ -35,7 +29,6 @@
                    FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
                    Margin="0,-30,0,10"/>
 
-        <!-- Row 1: Input Fields -->
         <Border Grid.Row="1" 
                 Margin="0,0,0,20"
                 Background="White"
@@ -49,16 +42,11 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*" MinWidth="180" />
-                    <!-- Produce / Batch -->
                     <ColumnDefinition Width="1*" MinWidth="120" />
-                    <!-- Quantity -->
                     <ColumnDefinition Width="1*" MinWidth="120" />
-                    <!-- Weight -->
                     <ColumnDefinition Width="1.5*" MinWidth="150" />
-                    <!-- Date Harvested -->
                 </Grid.ColumnDefinitions>
 
-                <!-- Column 0: Produce / Batch ComboBox -->
                 <StackPanel Grid.Column="0" Margin="0,0,10,0">
                     <TextBlock Text="PRODUCE / BATCH" 
                                Foreground="#666666" 
@@ -71,7 +59,7 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <ComboBox x:Name="ProduceTypeComboBox"
+                        <ComboBox PlaceholderForeground="Black" x:Name="ProduceTypeComboBox"
                                   Grid.Column="0"
                                   Background="#EAFFCE"
                                   Foreground="Black"
@@ -116,7 +104,6 @@
                     </Grid>
                 </StackPanel>
 
-                <!-- Column 1: Quantity -->
                 <StackPanel Grid.Column="1" Margin="10,0,10,0">
                     <TextBlock Text="QUANTITY" 
                                Foreground="#666666" 
@@ -134,21 +121,19 @@
                                Value="0"/>
                 </StackPanel>
 
-                <!-- Column 2: Weight -->
                 <StackPanel Grid.Column="2" Margin="10,0,10,0">
                     <TextBlock Text="TOTAL WEIGHT (KG)" 
                                Foreground="#666666" 
                                FontWeight="SemiBold"
                                FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
                                Margin="0,0,0,5"/>
-                    <TextBox x:Name="WeightTextBox" 
+                    <TextBox PlaceholderForeground="Black" x:Name="WeightTextBox" 
                              PlaceholderText="e.g., 50.5" 
                              Background="#EAFFCE" 
                              Foreground="Black"
                              FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
                 </StackPanel>
 
-                <!-- Column 3: Date Harvested -->
                 <StackPanel Grid.Column="3" Margin="10,0,10,0">
                     <TextBlock Text="DATE HARVESTED / ACQUIRED" 
                                Foreground="#666666" 
@@ -160,11 +145,9 @@
                                 Foreground="Black"
                                 FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
                 </StackPanel>
-
             </Grid>
         </Border>
 
-        <!-- Row 2: Notes and Submit/Edit/Remove Buttons -->
         <Border Grid.Row="2" 
                 Margin="0,0,0,40"
                 Background="White"
@@ -178,9 +161,7 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
-                    <!-- Notes field -->
                     <ColumnDefinition Width="Auto" />
-                    <!-- Buttons -->
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.Column="0" Margin="0,0,20,0">
@@ -189,7 +170,7 @@
                                FontWeight="SemiBold"
                                FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
                                Margin="0,0,0,5"/>
-                    <TextBox MinWidth="500" 
+                    <TextBox PlaceholderForeground="Black" MinWidth="500" 
                              HorizontalAlignment="Left" 
                              x:Name="NotesTextBox"
                              PlaceholderText="Add any notes here (e.g., quality, storage)..."
@@ -203,7 +184,6 @@
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Spacing="10" VerticalAlignment="Bottom">
-
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <Button x:Name="SubmitButton"
                                 Content="SUBMIT"
@@ -273,7 +253,6 @@
             </Grid>
         </Border>
 
-        <!-- Row 3: "PRODUCE DATA" Title -->
         <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,0,0,10">
             <TextBlock Text="PRODUCE DATA"
                        Foreground="Black"
@@ -289,28 +268,30 @@
                        VerticalAlignment="Bottom"/>
         </StackPanel>
 
-        <!-- Row 4: Search/Sort -->
         <Grid Grid.Row="4" Margin="0,0,0,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBox MinWidth="500" x:Name="SearchTextBox"
+            <TextBox Foreground="#3B8C20" PlaceholderForeground="Black" Background="#EAFFCE" MinWidth="500" x:Name="SearchTextBox"
                      PlaceholderText="Search"
                      Grid.Column="0"
                      MaxWidth="300"
                      FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
-                     HorizontalAlignment="Left" />
+                     HorizontalAlignment="Left" 
+                     TextChanged="SearchTextBox_TextChanged"/>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
                 <TextBlock Text="Sort by: " 
                            Foreground="#666666" 
                            VerticalAlignment="Center"
                            FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
-                <ComboBox x:Name="SortComboBox" 
+
+                <ComboBox Foreground="Black" Background="#EAFFCE" x:Name="SortComboBox" 
                           SelectedIndex="0"
-                          FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins">
+                          FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
+                          SelectionChanged="SortComboBox_SelectionChanged">
                     <ComboBoxItem Content="Recently Added" />
                     <ComboBoxItem Content="Produce Type" />
                     <ComboBoxItem Content="Quantity" />
@@ -318,7 +299,6 @@
             </StackPanel>
         </Grid>
 
-        <!-- Row 5: DataGrid -->
         <Border Grid.Row="5"
                 Background="White"
                 CornerRadius="12"
@@ -328,7 +308,7 @@
             <Border.Shadow>
                 <ThemeShadow />
             </Border.Shadow>
-            <controls:DataGrid x:Name="ProduceDataGrid"
+            <controls:DataGrid Foreground="#3B8C20" x:Name="ProduceDataGrid"
                                AutoGenerateColumns="False"
                                CanUserSortColumns="True"
                                IsReadOnly="True"

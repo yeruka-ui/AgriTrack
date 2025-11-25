@@ -37,7 +37,7 @@
 
             <!-- Card 1: Livestock -->
             <Border Grid.Column="0" 
-                    Background="White" 
+                    Background="#EBFFF0" 
                     CornerRadius="12" 
                     Padding="16"
                     BorderBrush="#E0E0E0"
@@ -66,7 +66,7 @@
 
             <!-- Card 2: Milk Cost -->
             <Border Grid.Column="1" 
-                    Background="White" 
+                    Background="#EBFFF0" 
                     CornerRadius="12" 
                     Padding="16"
                     BorderBrush="#E0E0E0"
@@ -95,7 +95,7 @@
 
             <!-- Card 3: Qurbani -->
             <Border Grid.Column="2" 
-                    Background="White" 
+                    Background="#EBFFF0" 
                     CornerRadius="12" 
                     Padding="16"
                     BorderBrush="#E0E0E0"
@@ -124,7 +124,7 @@
 
             <!-- Card 4: Feed Cost -->
             <Border Grid.Column="3" 
-                    Background="White" 
+                    Background="#EBFFF0" 
                     CornerRadius="12" 
                     Padding="16"
                     BorderBrush="#E0E0E0"
@@ -163,7 +163,7 @@
 
                 <!-- Milk Chart -->
                 <Border Grid.Row="0" 
-                        Background="White" 
+                        Background="#EBFFF0" 
                         CornerRadius="16" 
                         Padding="20"
                         BorderBrush="#E0E0E0"
@@ -187,7 +187,7 @@
                                        FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
                         </StackPanel>
 
-                        <ItemsControl Grid.Row="1" ItemsSource="{Binding MilkProductionTrend}" VerticalAlignment="Bottom" Margin="0,15,0,0">
+                        <ItemsControl Background="Black" Grid.Row="1" ItemsSource="{Binding MilkProductionTrend}" VerticalAlignment="Bottom" Margin="0,15,0,0">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10"/>
@@ -196,7 +196,7 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel VerticalAlignment="Bottom">
-                                        <Rectangle Width="15" Height="{Binding BarHeight}" Fill="{Binding BarColor}" RadiusX="2" RadiusY="2"/>
+                                        <Rectangle Width="15" Height="{Binding BarHeight}" Fill="Transparent" RadiusX="2" RadiusY="2"/>
                                         <TextBlock Text="{Binding DayLabel}" 
                                                    HorizontalAlignment="Center" 
                                                    Foreground="Black" 
@@ -212,7 +212,7 @@
 
                 <!-- NEW KPI: BIRTHS -->
                 <Border Grid.Row="1" 
-                        Background="White" 
+                        Background="#EBFFF0" 
                         CornerRadius="16" 
                         Padding="20"
                         BorderBrush="#E0E0E0"
@@ -251,7 +251,7 @@
 
             <!-- RIGHT COLUMN (Reminders) -->
             <Border Grid.Column="1" 
-                    Background="White" 
+                    Background="#EBFFF0" 
                     CornerRadius="16" 
                     Padding="24"
                     BorderBrush="#E0E0E0"
