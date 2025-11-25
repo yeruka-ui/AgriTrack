@@ -14,10 +14,6 @@ namespace agrify.Pages
     public sealed partial class ProducePage : Page
     {
         private ObservableCollection<Produce> ProduceList;
-
-        // 1. ADD MASTER LIST
-        private System.Collections.Generic.List<Produce> _masterList;
-
         public ObservableCollection<string> ProduceTypeList { get; set; }
         private Produce _selectedProduce;
 
@@ -25,53 +21,56 @@ namespace agrify.Pages
         {
             this.InitializeComponent();
 
+            // Initialize the lists
             ProduceList = new ObservableCollection<Produce>();
-            // 2. INITIALIZE MASTER LIST
-            _masterList = new System.Collections.Generic.List<Produce>();
             ProduceTypeList = new ObservableCollection<string>();
 
+            // Set the DataGrid and ComboBox sources
             ProduceDataGrid.ItemsSource = ProduceList;
-            ProduceTypeComboBox.ItemsSource = ProduceTypeList;
+            ProduceTypeComboBox.ItemsSource = ProduceTypeList; // Matches your example
 
+            // Set default state
             ClearForm();
         }
 
+        /// <summary>
+        /// Runs when the page is loaded. Fetches data from the database.
+        /// </summary>
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             await LoadDataAsync();
         }
 
+        /// <summary>
+        /// UPDATED: Helper method to load all data and categories.
+        /// </summary>
         private async Task LoadDataAsync()
         {
+            // Clear existing data
             ProduceList.Clear();
-            _masterList.Clear(); // 3. CLEAR MASTER
             ProduceTypeList.Clear();
 
             using (var db = new AgrifyDbContext())
             {
+                // 1. Load all Produce items
                 var allProduce = await db.Produce.ToListAsync();
-
-                // 4. FILL MASTER LIST FIRST
-                _masterList.AddRange(allProduce);
-
-                // Default sort (Recently Added / ID Descending)
-                var orderedInitial = _masterList.OrderByDescending(x => x.ProduceId);
-
-                foreach (var produce in orderedInitial)
+                foreach (var produce in allProduce)
                 {
                     ProduceList.Add(produce);
                 }
 
-                // Load Categories (Same as before)
+                // 2. Load types from the new ItemCategories table
                 var typesFromCategories = await db.ItemCategories
-                                                 .Where(c => c.CategoryType == "Produce")
-                                                 .Select(c => c.Name)
-                                                 .ToListAsync();
+                                                  .Where(c => c.CategoryType == "Produce") // <-- Filter for "Produce"
+                                                  .Select(c => c.Name)
+                                                  .ToListAsync();
 
+                // 3. Load types from existing items (fallback)
                 var typesFromItems = await db.Produce
-                                               .Select(p => p.ProduceType)
-                                               .ToListAsync();
+                                             .Select(p => p.ProduceType)
+                                             .ToListAsync();
 
+                // 4. Combine, remove duplicates, and sort
                 var allTypes = typesFromCategories.Union(typesFromItems)
                                                   .Distinct()
                                                   .OrderBy(name => name);
@@ -83,64 +82,21 @@ namespace agrify.Pages
             }
         }
 
-        // === 5. FILTERING ENGINE ===
-        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            ApplyFilters();
-        }
-
-        private void SortComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ApplyFilters();
-        }
-
-        private void ApplyFilters()
-        {
-            if (_masterList == null) return;
-
-            string query = SearchTextBox.Text?.ToLower() ?? "";
-
-            // Filter logic
-            var filtered = _masterList.Where(p =>
-                p.ProduceType.ToLower().Contains(query) ||
-                (p.Notes != null && p.Notes.ToLower().Contains(query))
-            // You can add Weight filtering here if you want string matching
-            );
-
-            // Sorting logic based on ComboBox
-            switch (SortComboBox.SelectedIndex)
-            {
-                case 1: // Produce Type (A-Z)
-                    filtered = filtered.OrderBy(x => x.ProduceType);
-                    break;
-                case 2: // Quantity (High to Low)
-                    filtered = filtered.OrderByDescending(x => x.Quantity);
-                    break;
-                case 0: // Recently Added (Default)
-                default:
-                    filtered = filtered.OrderByDescending(x => x.ProduceId);
-                    break;
-            }
-
-            // Update UI
-            ProduceList.Clear();
-            foreach (var p in filtered)
-            {
-                ProduceList.Add(p);
-            }
-        }
-
+        /// <summary>
+        /// UPDATED: Saves new/edited items to the database.
+        /// </summary>
         private async void SubmitButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!ValidateForm()) return;
+            if (!ValidateForm())
+            {
+                return;
+            }
 
             using (var db = new AgrifyDbContext())
             {
                 if (_selectedProduce != null)
                 {
-                    // === UPDATE EXISTING ===
-                    db.Produce.Attach(_selectedProduce); // Ensure EF is tracking it
-
+                    // UPDATE MODE
                     _selectedProduce.ProduceType = ProduceTypeComboBox.SelectedItem.ToString();
                     _selectedProduce.Quantity = (int)QuantityNumberBox.Value;
                     _selectedProduce.Weight = WeightTextBox.Text;
@@ -150,11 +106,15 @@ namespace agrify.Pages
                     db.Produce.Update(_selectedProduce);
                     await db.SaveChangesAsync();
 
+                    // Refresh the item in the list
+                    int index = ProduceList.IndexOf(_selectedProduce);
+                    ProduceList[index] = _selectedProduce;
+
                     ErrorMessageTextBlock.Text = "Item updated successfully.";
                 }
                 else
                 {
-                    // === CREATE NEW ===
+                    // CREATE NEW MODE
                     var newProduce = new Produce
                     {
                         ProduceType = ProduceTypeComboBox.SelectedItem.ToString(),
@@ -167,9 +127,8 @@ namespace agrify.Pages
                     db.Produce.Add(newProduce);
                     await db.SaveChangesAsync();
 
-                    // 6. SYNC LISTS
-                    _masterList.Insert(0, newProduce); // Add to Master
-                    ProduceList.Insert(0, newProduce); // Add to UI
+                    // Add to the UI list *after* saving (so it has an ID)
+                    ProduceList.Add(newProduce);
 
                     ErrorMessageTextBlock.Text = "New item added successfully.";
                 }
@@ -178,6 +137,9 @@ namespace agrify.Pages
             ExitEditMode();
         }
 
+        /// <summary>
+        /// UPDATED: Removes item from the database.
+        /// </summary>
         private async void RemoveButton_Click(object sender, RoutedEventArgs e)
         {
             if (_selectedProduce == null)
@@ -188,12 +150,12 @@ namespace agrify.Pages
 
             using (var db = new AgrifyDbContext())
             {
+                // Remove from the database
                 db.Produce.Remove(_selectedProduce);
                 await db.SaveChangesAsync();
             }
 
-            // 7. SYNC REMOVAL
-            _masterList.Remove(_selectedProduce);
+            // Remove from the UI list
             ProduceList.Remove(_selectedProduce);
 
             _selectedProduce = null;
@@ -201,7 +163,7 @@ namespace agrify.Pages
             ErrorMessageTextBlock.Text = "Item removed successfully.";
         }
 
-        // ... Rest of the helper methods (EditButton_Click, CancelButton_Click, etc.) remain the same ...
+        // --- All methods below this line are unchanged or have minor tweaks ---
 
         private bool ValidateForm()
         {
@@ -253,7 +215,7 @@ namespace agrify.Pages
             RemoveButton.Visibility = Visibility.Collapsed;
             CancelButton.Visibility = Visibility.Visible;
 
-            ErrorMessageTextBlock.Text = "Editing selected item.";
+            ErrorMessageTextBlock.Text = "Editing selected item. Click UPDATE to save or CANCEL to exit.";
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -291,6 +253,9 @@ namespace agrify.Pages
             }
         }
 
+        /// <summary>
+        /// UPDATED: Saves the new category to the database.
+        /// </summary>
         private async void SaveNewProduceTypeButton_Click(object sender, RoutedEventArgs e)
         {
             NewProduceTypeErrorTextBlock.Text = "";
@@ -302,12 +267,14 @@ namespace agrify.Pages
                 return;
             }
 
+            // Check local list first
             if (ProduceTypeList.Any(s => s.Equals(newProduceType, StringComparison.OrdinalIgnoreCase)))
             {
                 NewProduceTypeErrorTextBlock.Text = "This produce type already exists.";
                 return;
             }
 
+            // --- NEW: Save to database ---
             using (var db = new AgrifyDbContext())
             {
                 bool exists = await db.ItemCategories
@@ -318,12 +285,13 @@ namespace agrify.Pages
                     var newCategory = new ItemCategory
                     {
                         Name = newProduceType,
-                        CategoryType = "Produce"
+                        CategoryType = "Produce" // Mark this as a "Produce" type
                     };
                     db.ItemCategories.Add(newCategory);
                     await db.SaveChangesAsync();
                 }
             }
+            // --- End of new code ---
 
             ProduceTypeList.Add(newProduceType);
             ProduceTypeComboBox.SelectedItem = newProduceType;

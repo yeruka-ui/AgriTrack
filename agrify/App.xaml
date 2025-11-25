@@ -5,7 +5,6 @@
     xmlns:utu="using:Uno.Toolkit.UI"
     xmlns:um="using:Uno.Material"
     xmlns:ut="using:Uno.Themes"
-    RequestedTheme="Light"
     xmlns:local="using:agrify">
 
     <Application.Resources>
@@ -14,7 +13,8 @@
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
                 <um:MaterialColors/>
                 <um:MaterialResources/>
-         
+                <ResourceDictionary Source="ms-appx:///Styles/ColorsOverrideLogin.xaml" />
+                <ResourceDictionary Source="ms-appx:///Styles/FontsOverrideLogin.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <Style TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">

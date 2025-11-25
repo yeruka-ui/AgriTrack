@@ -34,11 +34,18 @@ namespace agrify.Data
         //CATEGORIES FOR SAVING IN COMBO BOX
         public DbSet<ItemCategory> ItemCategories { get; set; }
 
+        public DbSet<Sale> Sales { get; set; }
+
+        public DbSet<MonthlyKpis> MonthlyKpi { get; set; }
+
+
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // This connection string stays the same because
             // all the tables are in the ONE database.
-            string connectionString = @"Server=.\SQLEXPRESS;Database=agrifyDB;Trusted_Connection=True;TrustServerCertificate=True;";
+            string connectionString = @"Server=Raleii\SQLEXPRESS03;Database=agrifyDB;Trusted_Connection=True;TrustServerCertificate=True;";
 
             optionsBuilder.UseSqlServer(connectionString);
         }
