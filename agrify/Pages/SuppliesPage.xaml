@@ -7,10 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     mc:Ignorable="d"
-    Loaded="Page_Loaded"
-    RequestedTheme="Light"
-    Background="White">
-
+    Background="#FF2D2D30"
+    Loaded="Page_Loaded">
     <Grid Padding="48">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -23,251 +21,156 @@
 
         <TextBlock Text="INPUT INFORMATION"
                    Grid.Row="0"
-                   Foreground="Black"
+                   Foreground="White"
                    FontSize="16"
-                   FontWeight="SemiBold"
-                   FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
+                   FontWeight="Bold"
                    Margin="0,-30,0,10"/>
 
-        <Border Grid.Row="1" 
-                Margin="0,0,0,20"
-                Background="White"
-                CornerRadius="12"
-                Padding="20"
-                BorderBrush="#E0E0E0"
-                BorderThickness="1">
-            <Border.Shadow>
-                <ThemeShadow />
-            </Border.Shadow>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*" MinWidth="180" />
-                    <ColumnDefinition Width="1*" MinWidth="120" />
-                    <ColumnDefinition Width="1*" MinWidth="120" />
-                    <ColumnDefinition Width="1.5*" MinWidth="150" />
-                </Grid.ColumnDefinitions>
+        <Grid Grid.Row="1" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" MinWidth="180" />
+                <ColumnDefinition Width="1*" MinWidth="120" />
+                <ColumnDefinition Width="1*" MinWidth="120" />
+                <ColumnDefinition Width="1.5*" MinWidth="150" />
+            </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="0" Margin="0,0,10,0">
-                    <TextBlock Text="SUPPLY TYPE" 
-                               Foreground="#666666" 
-                               FontWeight="SemiBold"
-                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
-                               Margin="0,0,0,5"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                <TextBlock Text="SUPPLY / ITEM" Foreground="LightGray" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                        <ComboBox PlaceholderForeground="Black" x:Name="SupplyTypeComboBox"
-                                  Grid.Column="0"
-                                  Background="#EAFFCE"
-                                  Foreground="Black"
-                                  FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
-                                  HorizontalAlignment="Stretch"
-                                  PlaceholderText="Select supply type..." />
+                    <ComboBox x:Name="SupplyTypeComboBox"
+                              Grid.Column="0"
+                              Background="#FFD9FFD9"
+                              Foreground="Black" 
+                              HorizontalAlignment="Stretch"
+                              PlaceholderText="Select supply type..." />
 
-                        <Button x:Name="AddSupplyTypeButton"
-                                Grid.Column="1"
-                                Content="+"
-                                FontWeight="Bold"
-                                FontFamily="ms-appx:///Assets/NewFolder/Poppins-Bold.ttf#Poppins"
-                                Background="#8DC63F"
-                                Foreground="White"
-                                Margin="5,0,0,0"
-                                Click="AddSupplyTypeButton_Click">
-                            <Button.Flyout>
-                                <Flyout x:Name="AddSupplyTypeFlyout" Placement="Bottom">
-                                    <StackPanel Spacing="10" Width="250">
-                                        <TextBlock Text="Add New Supply Type" 
-                                                   FontWeight="SemiBold"
-                                                   FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"/>
-                                        <TextBox x:Name="NewSupplyTypeTextBox" 
-                                                 PlaceholderText="e.g., Fertilizer" 
-                                                 Foreground="Black"
-                                                 FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
-                                        <TextBlock x:Name="NewSupplyTypeErrorTextBlock" 
-                                                   Foreground="Red" 
-                                                   TextWrapping="Wrap"
-                                                   FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
-                                        <Button x:Name="SaveNewSupplyTypeButton" 
-                                                Content="Save" 
-                                                Click="SaveNewSupplyTypeButton_Click" 
-                                                HorizontalAlignment="Stretch"
-                                                Background="#8DC63F"
-                                                Foreground="White"
-                                                FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"/>
-                                    </StackPanel>
-                                </Flyout>
-                            </Button.Flyout>
-                        </Button>
-                    </Grid>
+                    <Button x:Name="AddSupplyTypeButton"
+                            Grid.Column="1"
+                            Content="+"
+                            FontWeight="Bold"
+                            Margin="5,0,0,0"
+                            Click="AddSupplyTypeButton_Click">
+                        <Button.Flyout>
+                            <Flyout x:Name="AddSupplyTypeFlyout" Placement="Bottom">
+                                <StackPanel Spacing="10" Width="250">
+                                    <TextBlock Text="Add New Supply Type" FontWeight="Bold" />
+                                    <TextBox x:Name="NewSupplyTypeTextBox" PlaceholderText="e.g., Fertilizer" Foreground="Black"/>
+                                    <TextBlock x:Name="NewSupplyTypeErrorTextBlock" Foreground="Red" TextWrapping="Wrap" />
+                                    <Button x:Name="SaveNewSupplyTypeButton" Content="Save" Click="SaveNewSupplyTypeButton_Click" HorizontalAlignment="Stretch" />
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                </Grid>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Margin="10,0,10,0">
+                <TextBlock Text="QUANTITY" Foreground="LightGray" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                <NumberBox x:Name="QuantityNumberBox"
+                           PlaceholderText="e.g., 50"
+                           Background="#FFD9FFD9"
+                           Foreground="Black"
+                           SpinButtonPlacementMode="Compact"
+                           SmallChange="1"
+                           LargeChange="10"
+                           Value="0"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="2" Margin="10,0,10,0">
+                <TextBlock Text="COST (PER UNIT)" Foreground="LightGray" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                <NumberBox x:Name="UnitCostNumberBox"
+                           PlaceholderText="e.g., 12.50"
+                           Background="#FFD9FFD9"
+                           Foreground="Black"
+                           SpinButtonPlacementMode="Compact"
+                           SmallChange="0.1"
+                           LargeChange="1.0"
+                           Value="0"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="3" Margin="10,0,10,0">
+                <TextBlock Text="DATE ACQUIRED" Foreground="LightGray" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                <DatePicker x:Name="DateAcquiredPicker" Background="#FFD9FFD9" Foreground="Black" />
+            </StackPanel>
+
+        </Grid>
+
+        <Grid Grid.Row="2" Margin="0,0,0,40">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                <TextBlock Text="NOTES (OPTIONAL)" Foreground="LightGray" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                <TextBox MinWidth="500" HorizontalAlignment="Left" x:Name="NotesTextBox"
+                         PlaceholderText="Add any notes here (e.g., supplier, quality)..."
+                         Background="#FFD9FFD9"
+                         Foreground="Black"
+                         Height="90"
+                         AcceptsReturn="True"
+                         TextWrapping="Wrap"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Spacing="10" VerticalAlignment="Bottom">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Button x:Name="SubmitButton"
+                            Content="SUBMIT"
+                            Width="120"
+                            Background="#FF006400"
+                            Foreground="White"
+                            FontWeight="Bold"
+                            Click="SubmitButton_Click" />
+
+                    <Button x:Name="EditButton"
+                            Content="EDIT"
+                            Width="90"
+                            Background="#FFB8860B" 
+                            Foreground="White"
+                            FontWeight="Bold"
+                            Click="EditButton_Click" />
+
+                    <Button x:Name="RemoveButton"
+                            Content="REMOVE"
+                            Width="90"
+                            Background="#FFB22222"
+                            Foreground="White"
+                            FontWeight="Bold"
+                            Click="RemoveButton_Click" />
+
+                    <Button x:Name="CancelButton"
+                            Content="CANCEL"
+                            Width="90"
+                            Background="#FF696969"
+                            Foreground="White"
+                            FontWeight="Bold"
+                            Click="CancelButton_Click"
+                            Visibility="Collapsed"/>
                 </StackPanel>
 
-                <StackPanel Grid.Column="1" Margin="10,0,10,0">
-                    <TextBlock Text="QUANTITY" 
-                               Foreground="#666666" 
-                               FontWeight="SemiBold"
-                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
-                               Margin="0,0,0,5"/>
-                    <NumberBox x:Name="QuantityNumberBox"
-                               PlaceholderText="e.g., 50"
-                               Background="#EAFFCE"
-                               Foreground="Black"
-                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
-                               SpinButtonPlacementMode="Compact"
-                               SmallChange="1"
-                               LargeChange="10"
-                               Value="0"/>
-                </StackPanel>
-
-                <StackPanel Grid.Column="2" Margin="10,0,10,0">
-                    <TextBlock Text="UNIT COST (₱)" 
-                               Foreground="#666666" 
-                               FontWeight="SemiBold"
-                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
-                               Margin="0,0,0,5"/>
-                    <NumberBox x:Name="UnitCostNumberBox"
-                               PlaceholderText="e.g., 150.00"
-                               Background="#EAFFCE"
-                               Foreground="Black"
-                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
-                               SpinButtonPlacementMode="Compact"
-                               SmallChange="1"
-                               LargeChange="10"
-                               Value="0"/>
-                </StackPanel>
-
-                <StackPanel Grid.Column="3" Margin="10,0,10,0">
-                    <TextBlock Text="DATE ACQUIRED" 
-                               Foreground="#666666" 
-                               FontWeight="SemiBold"
-                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
-                               Margin="0,0,0,5"/>
-                    <DatePicker x:Name="DateAcquiredPicker" 
-                                Background="#EAFFCE" 
-                                Foreground="Black"
-                                FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
-                </StackPanel>
-            </Grid>
-        </Border>
-
-        <Border Grid.Row="2" 
-                Margin="0,0,0,40"
-                Background="White"
-                CornerRadius="12"
-                Padding="20"
-                BorderBrush="#E0E0E0"
-                BorderThickness="1">
-            <Border.Shadow>
-                <ThemeShadow />
-            </Border.Shadow>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
-                <StackPanel Grid.Column="0" Margin="0,0,20,0">
-                    <TextBlock Text="NOTES (OPTIONAL)" 
-                               Foreground="#666666" 
-                               FontWeight="SemiBold"
-                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
-                               Margin="0,0,0,5"/>
-                    <TextBox PlaceholderForeground="{StaticResource AppBlackColor}" MinWidth="500" 
-                             HorizontalAlignment="Left" 
-                             x:Name="NotesTextBox"
-                             PlaceholderText="Add any notes here..."
-                             Background="#EAFFCE"
-                             Foreground="Black"
-                             FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
-                             Height="90"
-                             AcceptsReturn="True"
-                             TextWrapping="Wrap"
-                             ScrollViewer.VerticalScrollBarVisibility="Auto" />
-                </StackPanel>
-
-                <StackPanel Grid.Column="1" Spacing="10" VerticalAlignment="Bottom">
-                    <StackPanel Orientation="Horizontal" Spacing="10">
-                        <Button x:Name="SubmitButton"
-                                Content="SUBMIT"
-                                Width="120"
-                                Background="#8DC63F"
-                                Foreground="White"
-                                FontWeight="SemiBold"
-                                FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
-                                CornerRadius="8"
-                                Click="SubmitButton_Click">
-                            <Button.Shadow>
-                                <ThemeShadow />
-                            </Button.Shadow>
-                        </Button>
-
-                        <Button x:Name="EditButton"
-                                Content="EDIT"
-                                Width="90"
-                                Background="#FFB8860B" 
-                                Foreground="White"
-                                FontWeight="SemiBold"
-                                FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
-                                CornerRadius="8"
-                                Click="EditButton_Click">
-                            <Button.Shadow>
-                                <ThemeShadow />
-                            </Button.Shadow>
-                        </Button>
-
-                        <Button x:Name="RemoveButton"
-                                Content="REMOVE"
-                                Width="90"
-                                Background="#FFB22222"
-                                Foreground="White"
-                                FontWeight="SemiBold"
-                                FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
-                                CornerRadius="8"
-                                Click="RemoveButton_Click">
-                            <Button.Shadow>
-                                <ThemeShadow />
-                            </Button.Shadow>
-                        </Button>
-
-                        <Button x:Name="CancelButton"
-                                Content="CANCEL"
-                                Width="90"
-                                Background="#FF696969"
-                                Foreground="White"
-                                FontWeight="SemiBold"
-                                FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
-                                CornerRadius="8"
-                                Click="CancelButton_Click"
-                                Visibility="Collapsed">
-                            <Button.Shadow>
-                                <ThemeShadow />
-                            </Button.Shadow>
-                        </Button>
-                    </StackPanel>
-
-                    <TextBlock x:Name="ErrorMessageTextBlock"
-                               Foreground="Red"
-                               FontWeight="SemiBold"
-                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
-                               TextWrapping="Wrap"
-                               MaxWidth="320" />
-                </StackPanel>
-            </Grid>
-        </Border>
+                <TextBlock x:Name="ErrorMessageTextBlock"
+                           Foreground="Red"
+                           FontWeight="Bold"
+                           TextWrapping="Wrap"
+                           MaxWidth="320" />
+            </StackPanel>
+        </Grid>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,0,0,10">
             <TextBlock Text="SUPPLIES DATA"
-                       Foreground="Black"
+                       Foreground="White"
                        FontSize="16"
-                       FontWeight="SemiBold"
-                       FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
+                       FontWeight="Bold"
                        VerticalAlignment="Bottom"/>
             <TextBlock Text="Supplies"
-                       Foreground="#666666"
+                       Foreground="LightGray"
                        FontSize="14"
-                       FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
                        Margin="10,0,0,0"
                        VerticalAlignment="Bottom"/>
         </StackPanel>
@@ -279,57 +182,39 @@
             </Grid.ColumnDefinitions>
 
             <TextBox MinWidth="500" x:Name="SearchTextBox"
-                     PlaceholderText="Search"
-                     Grid.Column="0"
-                     MaxWidth="300"
-                     FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
-                     HorizontalAlignment="Left" 
-                     TextChanged="SearchTextBox_TextChanged"/>
+                   PlaceholderText="Search"
+                   Grid.Column="0"
+                   MaxWidth="300"
+                   HorizontalAlignment="Left" />
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                <TextBlock Text="Sort by: " 
-                           Foreground="#666666" 
-                           VerticalAlignment="Center"
-                           FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
-
-                <ComboBox x:Name="SortComboBox" 
-                          SelectedIndex="0"
-                          FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
-                          SelectionChanged="SortComboBox_SelectionChanged">
+                <TextBlock Text="Sort by: " Foreground="LightGray" VerticalAlignment="Center" />
+                <ComboBox x:Name="SortComboBox" SelectedIndex="0">
                     <ComboBoxItem Content="Recently Added" />
-                    <ComboBoxItem Content="Supply Type" />
-                    <ComboBoxItem Content="Quantity" />
+                    <ComboBoxItem Content="Item Name" />
+                    <ComboBoxItem Content="Total Cost" />
                 </ComboBox>
             </StackPanel>
         </Grid>
 
-        <Border Grid.Row="5"
-                Background="White"
-                CornerRadius="12"
-                BorderBrush="#E0E0E0"
-                BorderThickness="1"
-                Padding="10">
-            <Border.Shadow>
-                <ThemeShadow />
-            </Border.Shadow>
-            <controls:DataGrid Foreground="#3B8C20" x:Name="SuppliesDataGrid"
-                               AutoGenerateColumns="False"
-                               CanUserSortColumns="True"
-                               IsReadOnly="True"
-                               GridLinesVisibility="Horizontal"
-                               HorizontalScrollBarVisibility="Auto"
-                               Background="White"
-                               SelectionChanged="SuppliesDataGrid_SelectionChanged">
+        <controls:DataGrid x:Name="SuppliesDataGrid"
+                           Grid.Row="5"
+                           AutoGenerateColumns="False"
+                           CanUserSortColumns="True"
+                           IsReadOnly="True"
+                           GridLinesVisibility="Horizontal"
+                           HorizontalScrollBarVisibility="Auto"
+                           SelectionChanged="SuppliesDataGrid_SelectionChanged">
 
-                <controls:DataGrid.Columns>
-                    <controls:DataGridTextColumn Header="Supply Type" Binding="{Binding ItemName}" Width="Auto" />
-                    <controls:DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="Auto" />
-                    <controls:DataGridTextColumn Header="Unit Cost (₱)" Binding="{Binding UnitCost}" Width="Auto" />
-                    <controls:DataGridTextColumn Header="Date Acquired (MM/DD/YYYY)" Binding="{Binding DateAcquired}" Width="Auto" />
-                    <controls:DataGridTextColumn Header="Notes" Binding="{Binding Notes}" Width="*" />
-                </controls:DataGrid.Columns>
-            </controls:DataGrid>
-        </Border>
+            <controls:DataGrid.Columns>
+                <controls:DataGridTextColumn Header="Supply / Item" Binding="{Binding ItemName}" Width="Auto" />
+                <controls:DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="Auto" />
+                <controls:DataGridTextColumn Header="Cost (per Unit)" Binding="{Binding UnitCost}" Width="Auto" />
+                <controls:DataGridTextColumn Header="Total Cost" Binding="{Binding TotalCost}" Width="Auto" />
+                <controls:DataGridTextColumn Header="Date Acquired" Binding="{Binding DateAcquired}" Width="Auto" />
+                <controls:DataGridTextColumn Header="Notes" Binding="{Binding Notes}" Width="*" />
+            </controls:DataGrid.Columns>
+        </controls:DataGrid>
 
     </Grid>
 </Page>

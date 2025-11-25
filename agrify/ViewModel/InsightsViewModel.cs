@@ -71,7 +71,9 @@ namespace agrify.ViewModels
                     using (var db = new AgrifyDbContext())
                     {
                         // 1. LIVESTOCK LOGIC
-                        var allAnimals = db.Livestock.ToList();
+                        var allAnimals = db.Livestock
+                            .Where(l => l.AnimalName != null && l.Breed != null && l.TagNumber != null)
+                            .ToList();
                         int totalCount = allAnimals.Count;
                         int deadCount = allAnimals.Count(a => !string.IsNullOrEmpty(a.Status) && (a.Status.ToLower().Contains("dead") || a.Status.ToLower().Contains("deceased")));
                         int activeCount = totalCount - deadCount;

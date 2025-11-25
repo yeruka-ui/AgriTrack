@@ -7,7 +7,7 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="White"
+    Background="#FF2D2D30"
     Loaded="Page_Loaded">
 
     <Grid Padding="24">
@@ -18,13 +18,7 @@
         </Grid.RowDefinitions>
 
         <!-- 1. Header -->
-        <TextBlock Text="FARM DASHBOARD" 
-                   Grid.Row="0" 
-                   FontSize="28" 
-                   FontWeight="SemiBold" 
-                   Foreground="Black"
-                   FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
-                   Margin="0,0,0,24"/>
+        <TextBlock Text="FARM DASHBOARD" Grid.Row="0" FontSize="28" FontWeight="Bold" Foreground="White" Margin="0,0,0,24"/>
 
         <!-- 2. KPI Cards Row -->
         <Grid Grid.Row="1" ColumnSpacing="16" Margin="0,0,0,24">
@@ -36,113 +30,38 @@
             </Grid.ColumnDefinitions>
 
             <!-- Card 1: Livestock -->
-            <Border Grid.Column="0" 
-                    Background="#EBFFF0" 
-                    CornerRadius="12" 
-                    Padding="16"
-                    BorderBrush="#E0E0E0"
-                    BorderThickness="1">
-                <Border.Shadow>
-                    <ThemeShadow />
-                </Border.Shadow>
+            <Border Grid.Column="0" Background="#FF3E3E42" CornerRadius="12" Padding="16">
                 <StackPanel>
-                    <TextBlock Text="Total Livestock" 
-                               Foreground="#666666" 
-                               FontSize="12"
-                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
-                    <TextBlock Text="{Binding TotalLivestock}" 
-                               Foreground="Black" 
-                               FontSize="28" 
-                               FontWeight="Bold"
-                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-Bold.ttf#Poppins"
-                               Margin="0,8,0,0"/>
-                    <TextBlock Text="{Binding ActiveHerdLabel}" 
-                               Foreground="#8DC63F" 
-                               FontSize="12"
-                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
-                               Margin="0,4,0,0"/>
+                    <TextBlock Text="Total Livestock" Foreground="#AAAAAA" FontSize="12"/>
+                    <TextBlock Text="{Binding TotalLivestock}" Foreground="White" FontSize="28" FontWeight="Bold" Margin="0,8,0,0"/>
+                    <!-- UPDATED BINDING HERE -->
+                    <TextBlock Text="{Binding ActiveHerdLabel}" Foreground="#00FF00" FontSize="12" Margin="0,4,0,0"/>
                 </StackPanel>
             </Border>
 
             <!-- Card 2: Milk Cost -->
-            <Border Grid.Column="1" 
-                    Background="#EBFFF0" 
-                    CornerRadius="12" 
-                    Padding="16"
-                    BorderBrush="#E0E0E0"
-                    BorderThickness="1">
-                <Border.Shadow>
-                    <ThemeShadow />
-                </Border.Shadow>
+            <Border Grid.Column="1" Background="#FF3E3E42" CornerRadius="12" Padding="16">
                 <StackPanel>
-                    <TextBlock Text="Milk Cost (Per Liter)" 
-                               Foreground="#666666" 
-                               FontSize="12"
-                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
-                    <TextBlock Text="{Binding MilkCostPerLiter}" 
-                               Foreground="Black" 
-                               FontSize="28" 
-                               FontWeight="Bold"
-                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-Bold.ttf#Poppins"
-                               Margin="0,8,0,0"/>
-                    <TextBlock Text="Target: &lt; Rs 1,000" 
-                               Foreground="Orange" 
-                               FontSize="12"
-                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
-                               Margin="0,4,0,0"/>
+                    <TextBlock Text="Milk Cost (Per Liter)" Foreground="#AAAAAA" FontSize="12"/>
+                    <TextBlock Text="{Binding MilkCostPerLiter}" Foreground="White" FontSize="28" FontWeight="Bold" Margin="0,8,0,0"/>
+                    <TextBlock Text="Target: &lt; Rs 1,000" Foreground="Orange" FontSize="12" Margin="0,4,0,0"/>
                 </StackPanel>
             </Border>
 
             <!-- Card 3: Qurbani -->
-            <Border Grid.Column="2" 
-                    Background="#EBFFF0" 
-                    CornerRadius="12" 
-                    Padding="16"
-                    BorderBrush="#E0E0E0"
-                    BorderThickness="1">
-                <Border.Shadow>
-                    <ThemeShadow />
-                </Border.Shadow>
+            <Border Grid.Column="2" Background="#FF3E3E42" CornerRadius="12" Padding="16">
                 <StackPanel>
-                    <TextBlock Text="Qurbani Ready" 
-                               Foreground="#666666" 
-                               FontSize="12"
-                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
-                    <TextBlock Text="{Binding QurbaniReadyCount}" 
-                               Foreground="Black" 
-                               FontSize="28" 
-                               FontWeight="Bold"
-                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-Bold.ttf#Poppins"
-                               Margin="0,8,0,0"/>
-                    <TextBlock Text="Eid Projection" 
-                               Foreground="#666666" 
-                               FontSize="12"
-                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
-                               Margin="0,4,0,0"/>
+                    <TextBlock Text="Qurbani Ready" Foreground="#AAAAAA" FontSize="12"/>
+                    <TextBlock Text="{Binding QurbaniReadyCount}" Foreground="White" FontSize="28" FontWeight="Bold" Margin="0,8,0,0"/>
+                    <TextBlock Text="Eid Projection" Foreground="#AAAAAA" FontSize="12" Margin="0,4,0,0"/>
                 </StackPanel>
             </Border>
 
             <!-- Card 4: Feed Cost -->
-            <Border Grid.Column="3" 
-                    Background="#EBFFF0" 
-                    CornerRadius="12" 
-                    Padding="16"
-                    BorderBrush="#E0E0E0"
-                    BorderThickness="1">
-                <Border.Shadow>
-                    <ThemeShadow />
-                </Border.Shadow>
+            <Border Grid.Column="3" Background="#FF3E3E42" CornerRadius="12" Padding="16">
                 <StackPanel>
-                    <TextBlock Text="Feed Daily Cost" 
-                               Foreground="#666666" 
-                               FontSize="12"
-                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
-                    <TextBlock Text="{Binding FeedDailyCost}" 
-                               Foreground="Black" 
-                               FontSize="28" 
-                               FontWeight="Bold"
-                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-Bold.ttf#Poppins"
-                               Margin="0,8,0,0"/>
+                    <TextBlock Text="Feed Daily Cost" Foreground="#AAAAAA" FontSize="12"/>
+                    <TextBlock Text="{Binding FeedDailyCost}" Foreground="White" FontSize="28" FontWeight="Bold" Margin="0,8,0,0"/>
                 </StackPanel>
             </Border>
         </Grid>
@@ -162,32 +81,18 @@
                 </Grid.RowDefinitions>
 
                 <!-- Milk Chart -->
-                <Border Grid.Row="0" 
-                        Background="#EBFFF0" 
-                        CornerRadius="16" 
-                        Padding="20"
-                        BorderBrush="#E0E0E0"
-                        BorderThickness="1">
-                    <Border.Shadow>
-                        <ThemeShadow />
-                    </Border.Shadow>
+                <Border Grid.Row="0" Background="#FF3E3E42" CornerRadius="16" Padding="20">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <StackPanel>
-                            <TextBlock Text="MILK TREND" 
-                                       FontWeight="SemiBold" 
-                                       Foreground="Black"
-                                       FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"/>
-                            <TextBlock Text="Last 7 Days" 
-                                       Foreground="#666666" 
-                                       FontSize="12"
-                                       FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
+                            <TextBlock Text="MILK TREND" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text="Last 7 Days" Foreground="#AAAAAA" FontSize="12"/>
                         </StackPanel>
 
-                        <ItemsControl Background="Black" Grid.Row="1" ItemsSource="{Binding MilkProductionTrend}" VerticalAlignment="Bottom" Margin="0,15,0,0">
+                        <ItemsControl Grid.Row="1" ItemsSource="{Binding MilkProductionTrend}" VerticalAlignment="Bottom" Margin="0,15,0,0">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10"/>
@@ -196,13 +101,8 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel VerticalAlignment="Bottom">
-                                        <Rectangle Width="15" Height="{Binding BarHeight}" Fill="Transparent" RadiusX="2" RadiusY="2"/>
-                                        <TextBlock Text="{Binding DayLabel}" 
-                                                   HorizontalAlignment="Center" 
-                                                   Foreground="Black" 
-                                                   FontSize="10"
-                                                   FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
-                                                   Margin="0,4,0,0"/>
+                                        <Rectangle Width="15" Height="{Binding BarHeight}" Fill="{Binding BarColor}" RadiusX="2" RadiusY="2"/>
+                                        <TextBlock Text="{Binding DayLabel}" HorizontalAlignment="Center" Foreground="White" FontSize="10" Margin="0,4,0,0"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
@@ -211,54 +111,23 @@
                 </Border>
 
                 <!-- NEW KPI: BIRTHS -->
-                <Border Grid.Row="1" 
-                        Background="#EBFFF0" 
-                        CornerRadius="16" 
-                        Padding="20"
-                        BorderBrush="#E0E0E0"
-                        BorderThickness="1">
-                    <Border.Shadow>
-                        <ThemeShadow />
-                    </Border.Shadow>
+                <Border Grid.Row="1" Background="#FF3E3E42" CornerRadius="16" Padding="20">
                     <StackPanel VerticalAlignment="Center">
                         <StackPanel Orientation="Horizontal" Spacing="10">
-                            <FontIcon Glyph="&#xE779;" FontFamily="Segoe MDL2 Assets" Foreground="#8DC63F" FontSize="24"/>
+                            <FontIcon Glyph="&#xE779;" FontFamily="Segoe MDL2 Assets" Foreground="#00FF00" FontSize="24"/>
                             <StackPanel>
-                                <TextBlock Text="NEW BIRTHS" 
-                                           FontWeight="SemiBold" 
-                                           Foreground="Black" 
-                                           FontSize="14"
-                                           FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"/>
-                                <TextBlock Text="This Month" 
-                                           Foreground="#666666" 
-                                           FontSize="12"
-                                           FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
+                                <TextBlock Text="NEW BIRTHS" FontWeight="Bold" Foreground="White" FontSize="14"/>
+                                <TextBlock Text="This Month" Foreground="#AAAAAA" FontSize="12"/>
                             </StackPanel>
                         </StackPanel>
-                        <TextBlock Text="{Binding NewBirthsCount}" 
-                                   Foreground="Black" 
-                                   FontSize="32" 
-                                   FontWeight="Bold"
-                                   FontFamily="ms-appx:///Assets/NewFolder/Poppins-Bold.ttf#Poppins"
-                                   Margin="0,10,0,0"/>
-                        <TextBlock Text="Healthy Calves/Kids" 
-                                   Foreground="#8DC63F" 
-                                   FontSize="12"
-                                   FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
+                        <TextBlock Text="{Binding NewBirthsCount}" Foreground="White" FontSize="32" FontWeight="Bold" Margin="0,10,0,0"/>
+                        <TextBlock Text="Healthy Calves/Kids" Foreground="#00FF00" FontSize="12"/>
                     </StackPanel>
                 </Border>
             </Grid>
 
             <!-- RIGHT COLUMN (Reminders) -->
-            <Border Grid.Column="1" 
-                    Background="#EBFFF0" 
-                    CornerRadius="16" 
-                    Padding="24"
-                    BorderBrush="#E0E0E0"
-                    BorderThickness="1">
-                <Border.Shadow>
-                    <ThemeShadow />
-                </Border.Shadow>
+            <Border Grid.Column="1" Background="#FF3E3E42" CornerRadius="16" Padding="24">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -266,12 +135,8 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,0,0,20">
-                        <SymbolIcon Symbol="Calendar" Foreground="Black"/>
-                        <TextBlock Text="SCHEDULE &amp; REMINDERS (NEXT 7 DAYS)" 
-                                   FontWeight="SemiBold" 
-                                   Foreground="Black" 
-                                   VerticalAlignment="Center"
-                                   FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"/>
+                        <SymbolIcon Symbol="Calendar" Foreground="White"/>
+                        <TextBlock Text="SCHEDULE &amp; REMINDERS (NEXT 7 DAYS)" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
                     </StackPanel>
 
                     <ListView Grid.Row="1" ItemsSource="{Binding UpcomingReminders}" SelectionMode="None">
@@ -284,46 +149,17 @@
                                         <ColumnDefinition Width="100"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <Border Background="#F0F0F0" 
-                                            CornerRadius="8" 
-                                            Padding="5" 
-                                            HorizontalAlignment="Left" 
-                                            Width="60"
-                                            BorderBrush="#E0E0E0"
-                                            BorderThickness="1">
-                                        <TextBlock Text="{Binding Date}" 
-                                                   Foreground="Black" 
-                                                   FontWeight="SemiBold" 
-                                                   HorizontalAlignment="Center" 
-                                                   TextWrapping="Wrap" 
-                                                   TextAlignment="Center"
-                                                   FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"/>
+                                    <Border Background="#33FFFFFF" CornerRadius="8" Padding="5" HorizontalAlignment="Left" Width="60">
+                                        <TextBlock Text="{Binding Date}" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center"/>
                                     </Border>
 
                                     <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">
-                                        <TextBlock Text="{Binding Title}" 
-                                                   Foreground="Black" 
-                                                   FontWeight="SemiBold" 
-                                                   FontSize="14"
-                                                   FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"/>
-                                        <TextBlock Text="Operational Task" 
-                                                   Foreground="#666666" 
-                                                   FontSize="11"
-                                                   FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
+                                        <TextBlock Text="{Binding Title}" Foreground="White" FontWeight="SemiBold" FontSize="14"/>
+                                        <TextBlock Text="Operational Task" Foreground="#AAAAAA" FontSize="11"/>
                                     </StackPanel>
 
-                                    <Border Grid.Column="2" 
-                                            Background="#F9F9F9" 
-                                            BorderBrush="{Binding StatusBrush}" 
-                                            BorderThickness="1" 
-                                            CornerRadius="12" 
-                                            Padding="10,4" 
-                                            HorizontalAlignment="Right">
-                                        <TextBlock Text="{Binding Status}" 
-                                                   Foreground="{Binding StatusBrush}" 
-                                                   FontSize="12" 
-                                                   FontWeight="SemiBold"
-                                                   FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"/>
+                                    <Border Grid.Column="2" Background="#22000000" BorderBrush="{Binding StatusBrush}" BorderThickness="1" CornerRadius="12" Padding="10,4" HorizontalAlignment="Right">
+                                        <TextBlock Text="{Binding Status}" Foreground="{Binding StatusBrush}" FontSize="12" FontWeight="Bold"/>
                                     </Border>
                                 </Grid>
                             </DataTemplate>

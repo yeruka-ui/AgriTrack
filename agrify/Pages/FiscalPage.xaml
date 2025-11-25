@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="White">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
         <ScrollViewer>
@@ -25,14 +25,13 @@
 
                 <!-- HEADER -->
                 <TextBlock Text="Expenses &amp; Revenue"
-                           FontSize="32"
-                           FontWeight="SemiBold"
-                           FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
-                           Margin="0,0,0,20"
-                           Foreground="Black"/>
+                       FontSize="32"
+                       FontWeight="Bold"
+                       Margin="0,0,0,20"
+                       Foreground="#0A8A46"/>
 
                 <!-- KPI BAR -->
-                <Grid Grid.Row="1" Margin="0,20,0,30" ColumnSpacing="20">
+                <Grid Grid.Row="1" Margin="0,20,0,30">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
@@ -40,229 +39,113 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- Total Revenue -->
-                    <Border Grid.Column="0" 
-                            Background="White"
-                            CornerRadius="12"
-                            Padding="20"
-                            BorderBrush="#E0E0E0"
-                            BorderThickness="1">
-                        <Border.Shadow>
-                            <ThemeShadow />
-                        </Border.Shadow>
-                        <StackPanel Spacing="10">
-                            <TextBlock Text="Total Revenue" 
-                                       Foreground="#666666" 
-                                       FontSize="14"
-                                       FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
-                            <Border Background="#8DC63F" 
-                                    CornerRadius="8" 
-                                    Padding="20,15">
-                                <TextBlock x:Name="TotalRevenueText" 
-                                           Text="₱0.00" 
-                                           FontSize="24" 
-                                           Foreground="White"
-                                           FontWeight="Bold"
-                                           FontFamily="ms-appx:///Assets/NewFolder/Poppins-Bold.ttf#Poppins"
-                                           HorizontalAlignment="Center"/>
-                            </Border>
-                        </StackPanel>
-                    </Border>
+                    <StackPanel Grid.Column="0" Spacing="8" Margin="0,0,10,0">
+                        <TextBlock Text="Total Revenue" Foreground="#0A8A46" FontSize="14"/>
+                        <Border Background="#0A8A46" CornerRadius="20" Padding="20,10">
+                            <TextBlock x:Name="TotalRevenueText" Text="0.00" FontSize="20" Foreground="White"
+                       HorizontalAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
 
                     <!-- Monthly Profit -->
-                    <Border Grid.Column="1" 
-                            Background="White"
-                            CornerRadius="12"
-                            Padding="20"
-                            BorderBrush="#E0E0E0"
-                            BorderThickness="1">
-                        <Border.Shadow>
-                            <ThemeShadow />
-                        </Border.Shadow>
-                        <StackPanel Spacing="10">
-                            <TextBlock Text="Monthly Profit" 
-                                       Foreground="#666666" 
-                                       FontSize="14"
-                                       FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
-                            <Border Background="#8DC63F" 
-                                    CornerRadius="8" 
-                                    Padding="20,15">
-                                <TextBlock x:Name="MonthlyProfitText" 
-                                           Text="₱0.00" 
-                                           FontSize="24" 
-                                           Foreground="White"
-                                           FontWeight="Bold"
-                                           FontFamily="ms-appx:///Assets/NewFolder/Poppins-Bold.ttf#Poppins"
-                                           HorizontalAlignment="Center"/>
-                            </Border>
-                        </StackPanel>
-                    </Border>
+                    <StackPanel Grid.Column="1" Spacing="8" Margin="10,0,10,0">
+                        <TextBlock Text="Monthly Profit" Foreground="#0A8A46" FontSize="14"/>
+                        <Border Background="#0A8A46" CornerRadius="20" Padding="20,10">
+                            <TextBlock x:Name="MonthlyProfitText" Text="0.00" FontSize="20" Foreground="White"
+                       HorizontalAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
 
                     <!-- ROI -->
-                    <Border Grid.Column="2" 
-                            Background="White"
-                            CornerRadius="12"
-                            Padding="20"
-                            BorderBrush="#E0E0E0"
-                            BorderThickness="1">
-                        <Border.Shadow>
-                            <ThemeShadow />
-                        </Border.Shadow>
-                        <StackPanel Spacing="10">
-                            <TextBlock Text="Return of Investment" 
-                                       Foreground="#666666" 
-                                       FontSize="14"
-                                       FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
-                            <Border Background="#8DC63F" 
-                                    CornerRadius="8" 
-                                    Padding="20,15">
-                                <TextBlock x:Name="RoiText" 
-                                           Text="0%" 
-                                           FontSize="24" 
-                                           Foreground="White"
-                                           FontWeight="Bold"
-                                           FontFamily="ms-appx:///Assets/NewFolder/Poppins-Bold.ttf#Poppins"
-                                           HorizontalAlignment="Center"/>
-                            </Border>
-                        </StackPanel>
-                    </Border>
+                    <StackPanel Grid.Column="2" Spacing="8" Margin="10,0,0,0">
+                        <TextBlock Text="Return of Investment" Foreground="#0A8A46" FontSize="14"/>
+                        <Border Background="#0A8A46" CornerRadius="20" Padding="20,10">
+                            <TextBlock x:Name="RoiText" Text="0%" FontSize="20" Foreground="White"
+                       HorizontalAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
                 </Grid>
 
                 <!-- MONTHLY PROFIT & LOSS INPUTS -->
                 <TextBlock Grid.Row="2"
-                           Text="Monthly Profit &amp; Loss"
-                           FontSize="22"
-                           FontWeight="SemiBold"
-                           FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
-                           Foreground="Black"
-                           Margin="0,20,0,10"/>
+                       Text="Monthly Profit &amp; Loss"
+                       FontSize="22"
+                       FontWeight="SemiBold"
+                       Foreground="#0A8A46"
+                       Margin="0,20,0,10"/>
 
-                <Border Grid.Row="3"
-                        Background="White"
-                        CornerRadius="12"
-                        Padding="20"
-                        BorderBrush="#E0E0E0"
-                        BorderThickness="1"
-                        Margin="0,0,0,20">
-                    <Border.Shadow>
-                        <ThemeShadow />
-                    </Border.Shadow>
-                    <StackPanel Spacing="15">
+                <StackPanel Grid.Row="3" Spacing="10">
 
-                        <TextBlock Text="Enter Total Revenue:" 
-                                   Foreground="#666666"
-                                   FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
-                        <TextBox x:Name="RevenueInput" 
-                                 PlaceholderText="₱0.00"
-                                 Background="#EAFFCE"
-                                 FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins">
-                            <TextBox.InputScope>
-                                <InputScope>
-                                    <InputScope.Names>
-                                        <InputScopeName NameValue="Number"/>
-                                    </InputScope.Names>
-                                </InputScope>
-                            </TextBox.InputScope>
-                        </TextBox>
+                    <TextBlock Text="Enter Total Revenue:" Foreground="White"/>
+                    <TextBox x:Name="RevenueInput" PlaceholderText="0.00">
+                        <TextBox.InputScope>
+                            <InputScope>
+                                <InputScope.Names>
+                                    <InputScopeName NameValue="Number"/>
+                                </InputScope.Names>
+                            </InputScope>
+                        </TextBox.InputScope>
+                    </TextBox>
 
-                        <TextBlock Text="Enter Total Expense:" 
-                                   Foreground="#666666"
-                                   FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
-                        <TextBox x:Name="ExpenseInput" 
-                                 PlaceholderText="₱0.00"
-                                 Background="#EAFFCE"
-                                 FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins">
-                            <TextBox.InputScope>
-                                <InputScope>
-                                    <InputScope.Names>
-                                        <InputScopeName NameValue="Number"/>
-                                    </InputScope.Names>
-                                </InputScope>
-                            </TextBox.InputScope>
-                        </TextBox>
 
-                        <Button Content="CALCULATE MONTHLY PROFIT"
-                                Background="#8DC63F"
-                                Foreground="White"
-                                FontWeight="SemiBold"
-                                FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
-                                CornerRadius="8"
-                                Padding="20,12"
-                                HorizontalAlignment="Stretch"
-                                Click="CalculateProfit_Click">
-                            <Button.Shadow>
-                                <ThemeShadow />
-                            </Button.Shadow>
-                        </Button>
-                    </StackPanel>
-                </Border>
+
+                    <TextBlock Text="Enter Total Expense:" Foreground="White"/>
+                    <TextBox x:Name="ExpenseInput" PlaceholderText="0.00">
+                        <TextBox.InputScope>
+                            <InputScope>
+                                <InputScope.Names>
+                                    <InputScopeName NameValue="Number"/>
+                                </InputScope.Names>
+                            </InputScope>
+                        </TextBox.InputScope>
+                    </TextBox>
+
+                    <Button Content="CALCULATE MONTHLY PROFIT"
+                        Background="#0A8A46"
+                        Foreground="White"
+                        CornerRadius="10"
+                        Click="CalculateProfit_Click"/>
+                </StackPanel>
 
                 <!-- ROI INPUTS -->
                 <TextBlock Grid.Row="4"
-                           Text="ROI (Return of Investment)"
-                           FontSize="22"
-                           FontWeight="SemiBold"
-                           FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
-                           Foreground="Black"
-                           Margin="0,10,0,10"/>
+                       Text="ROI (Return of Investment)"
+                       FontSize="22"
+                       FontWeight="SemiBold"
+                       Foreground="#0A8A46"
+                       Margin="0,30,0,10"/>
 
-                <Border Grid.Row="5"
-                        Background="White"
-                        CornerRadius="12"
-                        Padding="20"
-                        BorderBrush="#E0E0E0"
-                        BorderThickness="1">
-                    <Border.Shadow>
-                        <ThemeShadow />
-                    </Border.Shadow>
-                    <StackPanel Spacing="15">
+                <StackPanel Grid.Row="5" Spacing="10">
 
-                        <TextBlock Text="Enter Total Investment:" 
-                                   Foreground="#666666"
-                                   FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
-                        <TextBox x:Name="InvestmentInput" 
-                                 PlaceholderText="₱0.00"
-                                 Background="#EAFFCE"
-                                 FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins">
-                            <TextBox.InputScope>
-                                <InputScope>
-                                    <InputScope.Names>
-                                        <InputScopeName NameValue="Number"/>
-                                    </InputScope.Names>
-                                </InputScope>
-                            </TextBox.InputScope>
-                        </TextBox>
+                    <TextBlock Text="Enter Total Investment:" Foreground="White"/>
+                    <TextBox x:Name="InvestmentInput" PlaceholderText="0.00">
+                        <TextBox.InputScope>
+                            <InputScope>
+                                <InputScope.Names>
+                                    <InputScopeName NameValue="Number"/>
+                                </InputScope.Names>
+                            </InputScope>
+                        </TextBox.InputScope>
+                    </TextBox>
 
-                        <TextBlock Text="Enter Total Revenue:" 
-                                   Foreground="#666666"
-                                   FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
-                        <TextBox x:Name="RevenueForRoiInput" 
-                                 PlaceholderText="₱0.00"
-                                 Background="#EAFFCE"
-                                 FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins">
-                            <TextBox.InputScope>
-                                <InputScope>
-                                    <InputScope.Names>
-                                        <InputScopeName NameValue="Number"/>
-                                    </InputScope.Names>
-                                </InputScope>
-                            </TextBox.InputScope>
-                        </TextBox>
+                    <TextBlock Text="Enter Total Revenue:" Foreground="White"/>
+                    <TextBox x:Name="RevenueForRoiInput" PlaceholderText="0.00">
+                        <TextBox.InputScope>
+                            <InputScope>
+                                <InputScope.Names>
+                                    <InputScopeName NameValue="Number"/>
+                                </InputScope.Names>
+                            </InputScope>
+                        </TextBox.InputScope>
+                    </TextBox>
 
-                        <Button Content="CALCULATE ROI"
-                                Background="#8DC63F"
-                                Foreground="White"
-                                FontWeight="SemiBold"
-                                FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
-                                CornerRadius="8"
-                                Padding="20,12"
-                                HorizontalAlignment="Stretch"
-                                Click="CalculateRoi_Click">
-                            <Button.Shadow>
-                                <ThemeShadow />
-                            </Button.Shadow>
-                        </Button>
-                    </StackPanel>
-                </Border>
+                    <Button Content="CALCULATE ROI"
+                        Background="#0A8A46"
+                        Foreground="White"
+                        CornerRadius="10"
+                        Click="CalculateRoi_Click"/>
+                </StackPanel>
+
 
             </Grid>
         </ScrollViewer>

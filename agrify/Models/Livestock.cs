@@ -7,19 +7,26 @@ namespace agrify.Models
     public class Livestock
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; } // The auto-incrementing Primary Key
+        public int Id { get; set; } // Your database primary key
 
-        // The specific fields used in your UI
+        // === PROPERTIES FROM YOUR MODEL ===
+        public int Quantity { get; set; }          
+        public DateTime Date { get; set; }
+        public string? AnimalName { get; set; } // nullable
+        public string? TagNumber { get; set; }  // nullable
+        public string? Breed { get; set; }      // nullable
+        public DateTime? DateOfBirth { get; set; } // nullable
+
+        // === PROPERTIES NEEDED BY YOUR UI (FROM XAML) ===
         public string Species { get; set; } = string.Empty;
-        public string Weight { get; set; } = string.Empty;
-        public DateTime DateOfBirth { get; set; }
+        public decimal? Weight { get; set; }    // nullable
         public string Gender { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
         public string Activity { get; set; } = string.Empty;
         public string Notes { get; set; } = string.Empty;
+        public decimal Cost { get; set; }
 
-        [NotMapped]
-        public string DOBString => DateOfBirth.ToString("MM/dd/yyyy");
+        // We will no longer use the "DOB" (string) property,
+        // we will use your "DateOfBirth" (DateTime) property instead.
     }
 }
