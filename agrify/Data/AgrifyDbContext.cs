@@ -2,8 +2,6 @@ using agrify.Models;
 using agrify.Models.Category;
 using Microsoft.EntityFrameworkCore;
 using Windows.System;
-using agrify.Models.Analytics;
-
 namespace agrify.Data
 {
     public class AgrifyDbContext : DbContext
@@ -20,12 +18,14 @@ namespace agrify.Data
 
         public DbSet<Produce> Produce { get; set; }
 
-        public DbSet<Expenses> Expenses { get; set; }
-        public DbSet<Investments> Investments { get; set; }
+        public DbSet<Expense> Expenses { get; set; }
+        public DbSet<Investment> Investments { get; set; }
+        public DbSet<MonthlyKpis> MonthlyKpi { get; set; }
         public DbSet<Revenues> Revenues { get; set; }
 
         public DbSet<Supplies> Supplies { get; set; }
 
+        public DbSet<Sale> Sales { get; set; }
         public DbSet<Holiday> Holidays { get; set; }
 
         public DbSet<CalendarTask> CalendarTasks { get; set; }
@@ -41,6 +41,29 @@ namespace agrify.Data
             string connectionString = @"Server=.\SQLEXPRESS;Database=agrifyDB;Trusted_Connection=True;TrustServerCertificate=True;";
 
             optionsBuilder.UseSqlServer(connectionString);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Fix for "Unable to cast Double to Decimal" crash
+            if (Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite")
+            {
+                // For Weight
+                modelBuilder.Entity<Livestock>()
+                    .Property(e => e.Weight)
+                    .HasConversion(
+                        v => (double)v, // Write to DB as double
+                        v => (decimal)v // Read from DB as decimal
+                    );
+
+                // For Cost
+                modelBuilder.Entity<Livestock>()
+                    .Property(e => e.Cost)
+                    .HasConversion(
+                        v => (double)v,
+                        v => (decimal)v
+                    );
+            }
         }
     }
 }

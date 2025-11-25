@@ -1,108 +1,158 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
-using agrify.Pages;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
 using agrify.Data;
 using agrify.Models;
-using agrify.Models.Category;
-using Microsoft.EntityFrameworkCore; 
+using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Windows.Foundation;
-using agrify.Data;
-using Windows.Foundation.Collections;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace agrify.Pages
 {
-
     public sealed partial class FiscalPage : Page
     {
-        private readonly AgrifyDbContext _db;
+        private ObservableCollection<Expense> _expenseList = new();
+        private ObservableCollection<Investment> _investmentList = new();
 
         public FiscalPage()
         {
             this.InitializeComponent();
-            _db = new AgrifyDbContext();
-            LoadKpis();
-        }
-        private async void LoadKpis()
-        {
-            await LoadTotalRevenue();
-            await LoadMonthlyProfit();
-            await LoadRoi();
-        }
-        private async Task LoadTotalRevenue()
-        {
-            var total = await _db.Revenues.SumAsync(r => (decimal?)r.Amount) ?? 0;
-            TotalRevenueText.Text = total.ToString("N2");
+            ExpensesGrid.ItemsSource = _expenseList;
+            InvestmentsGrid.ItemsSource = _investmentList;
+
+            // Set default date
+            ExpDatePicker.Date = DateTimeOffset.Now;
+
+            Loaded += FiscalPage_Loaded;
         }
 
-        // MONTHLY PROFIT
-        private async Task LoadMonthlyProfit()
+        private async void FiscalPage_Loaded(object sender, RoutedEventArgs e)
         {
-            var now = DateTime.UtcNow;
-
-            var monthlyRevenue = await _db.Revenues
-                .Where(r => r.Date.Month == now.Month && r.Date.Year == now.Year)
-                .SumAsync(r => (decimal?)r.Amount) ?? 0;
-
-            var monthlyExpenses = await _db.Expenses
-                .Where(e => e.Date.Month == now.Month && e.Date.Year == now.Year)
-                .SumAsync(e => (decimal?)e.Amount) ?? 0;
-
-            var profit = monthlyRevenue - monthlyExpenses;
-
-            MonthlyProfitText.Text = profit.ToString("N2");
+            await RefreshAllData();
         }
 
-        private async Task LoadRoi()
+        private async Task RefreshAllData()
         {
-            var totalRevenue = await _db.Revenues.SumAsync(r => (decimal?)r.Amount) ?? 0;
-            var totalInvestment = await _db.Investments.SumAsync(i => (decimal?)i.Amount) ?? 0;
-
-            if (totalInvestment == 0)
+            try
             {
-                RoiText.Text = "0%";
-                return;
-            }
-
-            var roi = ((totalRevenue - totalInvestment) / totalInvestment) * 100;
-            RoiText.Text = $"{roi:F2}%";
-        }
-
-        private void CalculateProfit_Click(object sender, RoutedEventArgs e)
-        {
-            if (decimal.TryParse(RevenueInput.Text, out decimal revenue) &&
-                decimal.TryParse(ExpenseInput.Text, out decimal expense))
-            {
-                decimal profit = revenue - expense;
-                MonthlyProfitText.Text = profit.ToString("N2");
-            }
-        }
-
-        private void CalculateRoi_Click(object sender, RoutedEventArgs e)
-        {
-            if (decimal.TryParse(InvestmentInput.Text, out decimal investment) &&
-                decimal.TryParse(RevenueForRoiInput.Text, out decimal revenue))
-            {
-                if (investment <= 0)
+                using (var db = new AgrifyDbContext())
                 {
-                    RoiText.Text = "0%";
-                    return;
-                }
+                    await db.Database.EnsureCreatedAsync();
 
-                decimal roi = ((revenue - investment) / investment) * 100;
-                RoiText.Text = roi.ToString("F2") + "%";
+                    // 1. Load History Lists
+                    var expenses = await db.Expenses.OrderByDescending(x => x.Date).ToListAsync();
+                    _expenseList.Clear();
+                    foreach (var ex in expenses) _expenseList.Add(ex);
+
+                    var investments = await db.Investments.OrderByDescending(x => x.Date).ToListAsync();
+                    _investmentList.Clear();
+                    foreach (var inv in investments) _investmentList.Add(inv);
+
+                    // 2. Calculate KPIs
+                    // Revenue comes from SALES table
+                    double totalRevenue = await db.Sales.SumAsync(s => (double)(s.Quantity * s.UnitPrice));
+
+                    double totalExpenses = expenses.Sum(x => (double)x.Amount);
+                    double totalInvestments = investments.Sum(x => (double)x.Amount);
+                    double netProfit = totalRevenue - totalExpenses;
+
+                    // 3. Update UI
+                    TotalRevenueText.Text = $"₱{totalRevenue:N2}";
+
+                    TotalProfitText.Text = $"₱{netProfit:N2}";
+                    if (netProfit >= 0) TotalProfitText.Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.LimeGreen);
+                    else TotalProfitText.Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.OrangeRed);
+
+                    if (totalInvestments > 0)
+                    {
+                        double roi = ((totalRevenue - totalInvestments) / totalInvestments) * 100;
+                        RoiText.Text = $"{roi:F1}%";
+                    }
+                    else
+                    {
+                        RoiText.Text = "N/A";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Fiscal Load Error: {ex.Message}");
+            }
+        }
+
+        // ============================
+        // ADD EXPENSE LOGIC
+        // ============================
+        private async void AddExpenseButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Validation
+            if (string.IsNullOrWhiteSpace(ExpNameBox.Text) || ExpAmountBox.Value <= 0) return;
+
+            var newExpense = new Expense
+            {
+                ExpenseName = ExpNameBox.Text,
+                Category = (ExpCategoryCombo.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "Other",
+                Amount = (decimal)ExpAmountBox.Value,
+                Date = ExpDatePicker.Date.DateTime
+            };
+
+            using (var db = new AgrifyDbContext())
+            {
+                db.Expenses.Add(newExpense);
+                await db.SaveChangesAsync();
+            }
+
+            // Reset UI
+            ExpNameBox.Text = "";
+            ExpAmountBox.Value = 0;
+
+            // Refresh
+            await RefreshAllData();
+        }
+
+        // ============================
+        // ADD INVESTMENT LOGIC
+        // ============================
+        private async void AddInvestmentButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(InvSourceBox.Text) || InvAmountBox.Value <= 0) return;
+
+            var newInv = new Investment
+            {
+                Source = InvSourceBox.Text,
+                Amount = (decimal)InvAmountBox.Value,
+                Date = DateTime.UtcNow
+            };
+
+            using (var db = new AgrifyDbContext())
+            {
+                db.Investments.Add(newInv);
+                await db.SaveChangesAsync();
+            }
+
+            InvSourceBox.Text = "";
+            InvAmountBox.Value = 0;
+
+            await RefreshAllData();
+        }
+
+        // ============================
+        // TAB SWITCHING
+        // ============================
+        private void Tab_Checked(object sender, RoutedEventArgs e)
+        {
+            if (ExpensesGrid == null || InvestmentsGrid == null) return;
+
+            if (TabExpenses.IsChecked == true)
+            {
+                ExpensesGrid.Visibility = Visibility.Visible;
+                InvestmentsGrid.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                ExpensesGrid.Visibility = Visibility.Collapsed;
+                InvestmentsGrid.Visibility = Visibility.Visible;
             }
         }
     }

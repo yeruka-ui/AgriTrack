@@ -140,18 +140,6 @@
                                 Grid.ColumnSpan="6" 
                                 Margin="0,0,0,15" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
                         
-                            <TextBlock Text="Batch Mode" 
-                                   VerticalAlignment="Center" 
-                                   Margin="0,0,10,0" 
-                                   FontWeight="SemiBold" 
-                                   Foreground="Black"
-                                   FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"/>
-                        
-                            <ToggleSwitch x:Name="BatchModeToggle" 
-                                      Toggled="BatchModeToggle_Toggled" 
-                                      OnContent="On" 
-                                      OffContent="Off"
-                                      Foreground="Black"/>
                             <StackPanel x:Name="BatchQuantityPanel" Orientation="Horizontal" Visibility="Collapsed" Margin="20,0,0,0">
                                 <TextBlock Text="No. of Animals:" 
                                        VerticalAlignment="Center" 
@@ -266,6 +254,14 @@
                              AcceptsReturn="True"
                              TextWrapping="Wrap"
                              ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                        <RadioButton x:Name="RadioIndividual" Content="Individual Animal" 
+                 IsChecked="True" Checked="Mode_Changed" />
+                        <RadioButton x:Name="RadioBatch" Content="Batch / Group" 
+                 Checked="Mode_Changed" />
+                        <TextBox x:Name="TagNumberBox" Header="Tag Number / Batch ID" 
+         PlaceholderText="e.g. COW-104 or CHICKEN-BATCH-A" Margin="0,0,0,12"/>
+                        <NumberBox x:Name="QuantityBox" Header="Quantity" Value="1" 
+           SpinButtonPlacementMode="Inline" Minimum="1" Margin="0,0,0,12" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10" VerticalAlignment="Bottom">

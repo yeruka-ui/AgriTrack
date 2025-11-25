@@ -1,441 +1,411 @@
-    using agrify.Data;            // Ensure this namespace exists for AgrifyDbContext
-    using agrify.Models;
-    using agrify.Models.Category; // Ensure this exists for ItemCategory
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.UI.Xaml;
-    using Microsoft.UI.Xaml.Controls;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Threading.Tasks;
+using agrify.Data;
+using agrify.Models;
+using agrify.Models.Category;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
 
-    namespace agrify.Pages
+namespace agrify.Pages
+{
+    public sealed partial class LivestockPage : Page
     {
-        public sealed partial class LivestockPage : Page
+        private ObservableCollection<Livestock> LivestockList;
+        private System.Collections.Generic.List<Livestock> _masterList;
+        public ObservableCollection<string> SpeciesList { get; set; }
+
+        private Livestock _selectedLivestock;
+
+        public LivestockPage()
         {
+            this.InitializeComponent();
 
-            private ObservableCollection<Livestock> LivestockList;
-            private System.Collections.Generic.List<Livestock> _masterList;
-            public ObservableCollection<string> SpeciesList { get; set; }
-
-            private Livestock _selectedLivestock;
-
-            public LivestockPage()
-            {
-                this.InitializeComponent();
-
-                LivestockList = new ObservableCollection<Livestock>();
-                SpeciesList = new ObservableCollection<string>();
+            LivestockList = new ObservableCollection<Livestock>();
+            SpeciesList = new ObservableCollection<string>();
             _masterList = new System.Collections.Generic.List<Livestock>();
 
             LivestockDataGrid.ItemsSource = LivestockList;
-                SpeciesComboBox.ItemsSource = SpeciesList;
+            SpeciesComboBox.ItemsSource = SpeciesList;
 
-                ClearForm();
-            }
+            ClearForm();
 
-            private async void Page_Loaded(object sender, RoutedEventArgs e)
+            // Initialize the UI state logic
+            Mode_Changed(null, null);
+        }
+
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            await LoadDataAsync();
+        }
+
+        // =========================================================
+        // 1. DATA LOADING
+        // =========================================================
+        private async Task LoadDataAsync()
+        {
+            try
             {
-                await LoadDataAsync();
-            }
-
-            private async Task LoadDataAsync()
-            {
-                // 1. Wrap everything in Try-Catch to stop "Silent Crashes"
-                try
-                {
-                    LivestockList.Clear();
-                    _masterList.Clear(); // Clear master too
-                    SpeciesList.Clear();
-
-                    using (var db = new AgrifyDbContext())
-                    {
-
-                        // === DIAGNOSTIC 1: WHERE IS THE DB? ===
-                        // Look at your Visual Studio "Output" window to see this path.
-                        var connString = db.Database.GetDbConnection().ConnectionString;
-                        System.Diagnostics.Debug.WriteLine($"[DB CONNECTION]: {connString}");
-
-                        // 2. Load Livestock
-                        // If the table columns don't match C# EXACTLY, this line will crash.
-                        var allLivestock = await db.Livestock.ToListAsync();
-                        _masterList.AddRange(allLivestock);
-                        var orderedInitial = _masterList.OrderByDescending(x => x.Id);
-                        foreach (var animal in allLivestock)
-                        {
-                            LivestockList.Add(animal);
-                        }
-
-                        // 3. Load Species (Categories)
-                        var typesFromCategories = await db.ItemCategories
-                            .Where(c => c.CategoryType == "Livestock")
-                            .Select(c => c.Name)
-                            .ToListAsync();
-
-                        // 4. Load existing types from Livestock table (fallback)
-                        var typesFromItems = await db.Livestock
-                            .Select(l => l.Species)
-                            .ToListAsync();
-
-                        // 5. Merge
-                        var allTypes = typesFromCategories.Union(typesFromItems)
-                            .Distinct()
-                            .OrderBy(n => n);
-
-                        foreach (var type in allTypes)
-                        {
-                            SpeciesList.Add(type);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // === DIAGNOSTIC 2: SHOW THE ERROR ===
-                    // This will pop up a dialog box if loading fails.
-                    ContentDialog errorDialog = new ContentDialog
-                    {
-                        Title = "Loading Error",
-                        Content = $"The database failed to load:\n{ex.Message}\n\nCheck Inner Exception: {ex.InnerException?.Message}",
-                        CloseButtonText = "Ok",
-                        XamlRoot = this.XamlRoot
-                    };
-                    await errorDialog.ShowAsync();
-
-                    // Also print to debug console
-                    System.Diagnostics.Debug.WriteLine($"[CRITICAL ERROR]: {ex.ToString()}");
-                }
-            }
-
-            private void ApplyFilters()
-            {
-                // Safety check to ensure data exists
-                if (_masterList == null) return;
-
-                // 1. Get the search query
-                string query = SearchTextBox.Text?.ToLower() ?? "";
-
-                // 2. Filter the Master List
-                // We look for matches in Species, Status, Activity, or Notes
-                var filtered = _masterList.Where(animal =>
-                    animal.Species.ToLower().Contains(query) ||
-                    animal.Status.ToLower().Contains(query) ||
-                    animal.Activity.ToLower().Contains(query) ||
-                    (animal.Notes != null && animal.Notes.ToLower().Contains(query))
-                );
-
-                // 3. Apply Sorting based on ComboBox
-                // Index 0: Recently Added, 1: Species, 2: Status
-                switch (SortComboBox.SelectedIndex)
-                {
-                    case 1: // Species (A-Z)
-                        filtered = filtered.OrderBy(x => x.Species);
-                        break;
-                    case 2: // Status (A-Z)
-                        filtered = filtered.OrderBy(x => x.Status);
-                        break;
-                    case 0: // Recently Added (Newest ID first)
-                    default:
-                        filtered = filtered.OrderByDescending(x => x.Id);
-                        break;
-                }
-
-                // 4. Update the UI
-                // We don't replace the ObservableCollection (breaks binding), we clear and refill it.
                 LivestockList.Clear();
-                foreach (var animal in filtered)
-                {
-                    LivestockList.Add(animal);
-                }
-            }
-    
-    
-    
-            private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
-            {
-                ApplyFilters();
-            }
-
-            private void SortComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-            {
-                ApplyFilters();
-            }
-
-
-            private async void SubmitButton_Click(object sender, RoutedEventArgs e)
-            {
-                if (!ValidateForm()) return;
-
-                // 1. Gather Common Data
-                string gender = (GenderMaleRadioButton.IsChecked == true) ? "Male" : "Female";
-                string activity = (ActivityActiveRadioButton.IsChecked == true) ? "Active" : "Inactive";
-
-                string status = "Recovered";
-                if (StatusSoldRadioButton.IsChecked == true) status = "Sold";
-                if (StatusTreatmentRadioButton.IsChecked == true) status = "Under Treatment";
+                _masterList.Clear();
+                SpeciesList.Clear();
 
                 using (var db = new AgrifyDbContext())
                 {
-                    // === EDIT MODE (Always Single) ===
-                    if (_selectedLivestock != null)
+                    var allLivestock = await db.Livestock.ToListAsync();
+                    _masterList.AddRange(allLivestock);
+
+                    // Sort by ID descending (Newest first)
+                    var orderedInitial = _masterList.OrderByDescending(x => x.Id);
+                    foreach (var animal in orderedInitial)
                     {
-                        // ... (Keep your existing Edit logic here, it is perfect) ...
-                        // Be sure to check: cannot edit a batch easily, so disable Batch Toggle when editing!
+                        LivestockList.Add(animal);
                     }
-                    // === CREATE MODE ===
-                    else
-                    {
-                        // CHECK: Is Batch Mode On?
-                        if (BatchModeToggle.IsOn)
-                        {
-                            string rawInput = BatchQuantityTextBox.Text;
-                            if (!int.TryParse(rawInput, out int qtyCheck) || qtyCheck < 2)
-                            {
-                                ErrorMessageTextBlock.Text = $"Invalid Quantity. You typed: '{rawInput}'";
-                                return;
-                            }
-                            // === BATCH LOGIC ===
-                            if (!int.TryParse(BatchQuantityTextBox.Text, out int qty) || qty < 2)
-                            {
-                                ErrorMessageTextBlock.Text = "Please enter a valid quantity (2+).";
-                                return;
-                            }
 
-                            // Create a list to hold the new animals
-                            var batchList = new System.Collections.Generic.List<Livestock>();
+                    // Load Species for ComboBox
+                    var typesFromCategories = await db.ItemCategories
+                        .Where(c => c.CategoryType == "Livestock")
+                        .Select(c => c.Name)
+                        .ToListAsync();
 
-                            for (int i = 0; i < qty; i++)
-                            {
-                                batchList.Add(new Livestock
-                                {
-                                    Species = SpeciesComboBox.SelectedItem.ToString(),
-                                    Weight = WeightTextBox.Text, // Assuming they all weigh the same approx
-                                    DateOfBirth = DobDatePicker.Date.DateTime,
-                                    Gender = gender,
-                                    Status = status,
-                                    Activity = activity,
-                                    Notes = NotesTextBox.Text // They share the note
-                                });
-                            }
+                    var typesFromItems = await db.Livestock
+                        .Select(l => l.Species)
+                        .ToListAsync();
 
-                            // FAST SAVE: Use AddRangeAsync
-                            await db.Livestock.AddRangeAsync(batchList);
-                            await db.SaveChangesAsync();
+                    var allTypes = typesFromCategories.Union(typesFromItems)
+                        .Distinct()
+                        .OrderBy(n => n);
 
-                            batchList.Reverse();
-
-                        _masterList.AddRange(batchList); // <--- ADD THIS
-
-                        // Update UI Collection (Avoid full reload for performance)
-                        foreach (var animal in batchList)
-                            {
-                                LivestockList.Insert(0, animal); // Add to top
-                            }
-
-                            ErrorMessageTextBlock.Text = $"Success! Added batch of {qty}.";
-                        }
-                        else
-                        {
-                            // === INDIVIDUAL LOGIC (Your existing code) ===
-                            var newAnimal = new Livestock
-                            {
-                                Species = SpeciesComboBox.SelectedItem.ToString(),
-                                Weight = WeightTextBox.Text,
-                                DateOfBirth = DobDatePicker.Date.DateTime,
-                                Gender = gender,
-                                Status = status,
-                                Activity = activity,
-                                Notes = NotesTextBox.Text
-                            };
-
-                            db.Livestock.Add(newAnimal);
-                            await db.SaveChangesAsync();
-                        _masterList.Insert(0, newAnimal); 
-                                                          // Add to top of list so user sees it
-                        LivestockList.Insert(0, newAnimal);
-                            ErrorMessageTextBlock.Text = "New animal added successfully.";
-                        }
-                    }
-                }
-
-                ExitEditMode();
-            }
-
-            private async void RemoveButton_Click(object sender, RoutedEventArgs e)
-            {
-                if (_selectedLivestock == null)
-                {
-                    ErrorMessageTextBlock.Text = "Please select a record to remove.";
-                    return;
-                }
-
-                using (var db = new AgrifyDbContext())
-                {
-                    db.Livestock.Remove(_selectedLivestock);
-                    await db.SaveChangesAsync();
-                }
-
-                LivestockList.Remove(_selectedLivestock);
-                ExitEditMode(); // Clears selection
-                ErrorMessageTextBlock.Text = "Record removed.";
-            }
-
-            private void EditButton_Click(object sender, RoutedEventArgs e)
-            {
-                if (_selectedLivestock == null)
-                {
-                    ErrorMessageTextBlock.Text = "Please select a record to edit.";
-                    return;
-                }
-                BatchModeToggle.IsOn = false;
-                BatchModeToggle.IsEnabled = false;
-
-                // Populate UI
-                SpeciesComboBox.SelectedItem = _selectedLivestock.Species;
-                WeightTextBox.Text = _selectedLivestock.Weight;
-                DobDatePicker.SelectedDate = _selectedLivestock.DateOfBirth;
-                NotesTextBox.Text = _selectedLivestock.Notes;
-
-                // Handle Radio Buttons Logic
-                if (_selectedLivestock.Gender == "Male") GenderMaleRadioButton.IsChecked = true;
-                else GenderFemaleRadioButton.IsChecked = true;
-
-                if (_selectedLivestock.Activity == "Active") ActivityActiveRadioButton.IsChecked = true;
-                else ActivityInactiveRadioButton.IsChecked = true;
-
-                switch (_selectedLivestock.Status)
-                {
-                    case "Sold": StatusSoldRadioButton.IsChecked = true; break;
-                    case "Under Treatment": StatusTreatmentRadioButton.IsChecked = true; break;
-                    default: StatusRecoveredRadioButton.IsChecked = true; break;
-                }
-
-                // Toggle Buttons
-                SubmitButton.Content = "UPDATE";
-                EditButton.Visibility = Visibility.Collapsed;
-                RemoveButton.Visibility = Visibility.Collapsed;
-                CancelButton.Visibility = Visibility.Visible;
-
-                ErrorMessageTextBlock.Text = "Editing mode active.";
-            }
-
-            private void CancelButton_Click(object sender, RoutedEventArgs e)
-            {
-                ExitEditMode();
-                ErrorMessageTextBlock.Text = "Edit cancelled.";
-            }
-
-            private void ExitEditMode()
-            {
-                _selectedLivestock = null;
-                ClearForm();
-
-                SubmitButton.Content = "SUBMIT";
-                EditButton.Visibility = Visibility.Visible;
-                RemoveButton.Visibility = Visibility.Visible;
-                CancelButton.Visibility = Visibility.Collapsed;
-                LivestockDataGrid.SelectedItem = null;
-                BatchModeToggle.IsEnabled = true;
-                BatchModeToggle.IsOn = false;
-                BatchQuantityPanel.Visibility = Visibility.Collapsed;
-            }
-
-            private void ClearForm()
-            {
-                SpeciesComboBox.SelectedIndex = -1;
-                WeightTextBox.Text = string.Empty;
-                DobDatePicker.SelectedDate = null;
-                NotesTextBox.Text = string.Empty;
-
-                // Reset Radios to Defaults
-                GenderMaleRadioButton.IsChecked = true;
-                StatusRecoveredRadioButton.IsChecked = true;
-                ActivityActiveRadioButton.IsChecked = true;
-            }
-
-            private void LivestockDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-            {
-                // Only allow changing selection if we are NOT in the middle of an edit (Cancel button visible)
-                // Or you can allow it but you must update the _selectedLivestock
-                if (CancelButton.Visibility == Visibility.Collapsed)
-                {
-                    _selectedLivestock = LivestockDataGrid.SelectedItem as Livestock;
+                    foreach (var type in allTypes) SpeciesList.Add(type);
                 }
             }
-
-            private bool ValidateForm()
+            catch (Exception ex)
             {
-                ErrorMessageTextBlock.Text = "";
-                if (SpeciesComboBox.SelectedItem == null)
+                ContentDialog errorDialog = new ContentDialog
                 {
-                    ErrorMessageTextBlock.Text = "Select a species.";
-                    return false;
-                }
-                if (string.IsNullOrWhiteSpace(WeightTextBox.Text))
-                {
-                    ErrorMessageTextBlock.Text = "Weight is required.";
-                    return false;
-                }
-                if (DobDatePicker.SelectedDate == null)
-                {
-                    ErrorMessageTextBlock.Text = "Date of Birth is required.";
-                    return false;
-                }
-                return true;
+                    Title = "Loading Error",
+                    Content = $"The database failed to load:\n{ex.Message}",
+                    CloseButtonText = "Ok",
+                    XamlRoot = this.XamlRoot
+                };
+                await errorDialog.ShowAsync();
             }
+        }
 
-            // === Flyout Logic for adding new Species ===
-            private async void SaveNewSpeciesButton_Click(object sender, RoutedEventArgs e)
+        // =========================================================
+        // 2. UI MODE SWITCHING
+        // =========================================================
+        private void Mode_Changed(object sender, RoutedEventArgs e)
+        {
+            // Safety check: ensure UI elements exist before accessing properties
+            if (QuantityBox == null || TagNumberBox == null) return;
+
+            if (RadioIndividual.IsChecked == true)
             {
-                NewSpeciesErrorTextBlock.Text = "";
-                var newSpecies = NewSpeciesTextBox.Text.Trim();
+                // INDIVIDUAL MODE
+                QuantityBox.Value = 1;
+                QuantityBox.IsEnabled = false; // Locked to 1
 
-                if (string.IsNullOrWhiteSpace(newSpecies))
-                {
-                    NewSpeciesErrorTextBlock.Text = "Name cannot be empty.";
-                    return;
-                }
-                if (SpeciesList.Any(s => s.Equals(newSpecies, StringComparison.OrdinalIgnoreCase)))
-                {
-                    NewSpeciesErrorTextBlock.Text = "Exists already.";
-                    return;
-                }
-
-                // Save to DB
-                using (var db = new AgrifyDbContext())
-                {
-                    bool exists = await db.ItemCategories.AnyAsync(c => c.Name == newSpecies && c.CategoryType == "Livestock");
-                    if (!exists)
-                    {
-                        db.ItemCategories.Add(new ItemCategory { Name = newSpecies, CategoryType = "Livestock" });
-                        await db.SaveChangesAsync();
-                    }
-                }
-
-                SpeciesList.Add(newSpecies);
-                SpeciesComboBox.SelectedItem = newSpecies;
-                AddSpeciesFlyout.Hide();
-                NewSpeciesTextBox.Text = "";
+                TagNumberBox.Header = "Tag Number (Required)";
+                TagNumberBox.PlaceholderText = "e.g., A-101";
             }
-
-            private void AddSpeciesButton_Click(object sender, RoutedEventArgs e)
+            else
             {
-                NewSpeciesErrorTextBlock.Text = "";
-                NewSpeciesTextBox.Text = "";
+                // BATCH MODE
+                QuantityBox.IsEnabled = true;
+                // Ensure valid start value
+                if (QuantityBox.Value < 2) QuantityBox.Value = 2;
+
+                TagNumberBox.Header = "Batch Name (Optional)";
+                TagNumberBox.PlaceholderText = "e.g., Chicks Sept 2024";
             }
+        }
 
-            private void BatchModeToggle_Toggled(object sender, RoutedEventArgs e)
+        // =========================================================
+        // 3. SUBMIT LOGIC
+        // =========================================================
+        private async void SubmitButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!ValidateForm()) return;
+
+            string gender = (GenderMaleRadioButton.IsChecked == true) ? "Male" : "Female";
+            string activity = (ActivityActiveRadioButton.IsChecked == true) ? "Active" : "Inactive";
+            string status = StatusSoldRadioButton.IsChecked == true ? "Sold" :
+                            StatusTreatmentRadioButton.IsChecked == true ? "Under Treatment" : "Recovered";
+
+            using (var db = new AgrifyDbContext())
             {
-                if (BatchModeToggle.IsOn)
+                Livestock animalToSave;
+                bool isNew = (_selectedLivestock == null);
+
+                if (isNew)
                 {
-                    BatchQuantityPanel.Visibility = Visibility.Visible;
-                    // Optional: Change UI text to indicate batch entry
-                    SubmitButton.Content = "SUBMIT BATCH";
+                    animalToSave = new Livestock();
+                    db.Livestock.Add(animalToSave);
                 }
                 else
                 {
-                    BatchQuantityPanel.Visibility = Visibility.Collapsed;
-                    SubmitButton.Content = "SUBMIT";
+                    animalToSave = await db.Livestock.FindAsync(_selectedLivestock.Id);
+                    if (animalToSave == null) return;
+                }
+
+                // === MAPPING ===
+                animalToSave.Species = SpeciesComboBox.SelectedItem?.ToString() ?? SpeciesComboBox.Text;
+
+                // FIX 1: Parse to Decimal safely
+                if (decimal.TryParse(WeightTextBox.Text, out decimal w))
+                    animalToSave.Weight = w;
+                else
+                    animalToSave.Weight = 0m;
+
+                animalToSave.DateOfBirth = DobDatePicker.Date.DateTime;
+                animalToSave.Gender = gender;
+                animalToSave.Status = status;
+                animalToSave.Activity = activity;
+                animalToSave.Notes = NotesTextBox.Text;
+                animalToSave.TagNumber = TagNumberBox.Text;
+
+                // FIX 2: Cost is decimal (Defaults to 0 if not used in UI)
+                animalToSave.Cost = 0m;
+
+                // FIX 3: Quantity Logic
+                if (RadioIndividual.IsChecked == true)
+                {
+                    animalToSave.Quantity = 1;
+                }
+                else
+                {
+                    animalToSave.Quantity = Convert.ToInt32(QuantityBox.Value);
+                    if (string.IsNullOrWhiteSpace(animalToSave.TagNumber))
+                    {
+                        animalToSave.TagNumber = $"BATCH-{DateTime.Now:MMdd}-{animalToSave.Species}";
+                    }
+                }
+
+                await db.SaveChangesAsync();
+
+                // Update UI
+                if (isNew)
+                {
+                    _masterList.Insert(0, animalToSave);
+                    LivestockList.Insert(0, animalToSave);
+                    ErrorMessageTextBlock.Text = "Saved successfully.";
+                }
+                else
+                {
+                    // Update the UI object properties manually to reflect changes
+                    var uiItem = LivestockList.FirstOrDefault(x => x.Id == animalToSave.Id);
+                    if (uiItem != null)
+                    {
+                        uiItem.Species = animalToSave.Species;
+                        uiItem.Weight = animalToSave.Weight;
+                        uiItem.Quantity = animalToSave.Quantity;
+                        uiItem.TagNumber = animalToSave.TagNumber;
+                        uiItem.Status = animalToSave.Status;
+                        uiItem.Notes = animalToSave.Notes;
+                    }
+                    ExitEditMode();
+                    ErrorMessageTextBlock.Text = "Updated successfully.";
                 }
             }
         }
+
+        // =========================================================
+        // 4. VALIDATION
+        // =========================================================
+        private bool ValidateForm()
+        {
+            ErrorMessageTextBlock.Text = "";
+
+            if (SpeciesComboBox.SelectedItem == null && string.IsNullOrWhiteSpace(SpeciesComboBox.Text))
+            {
+                ErrorMessageTextBlock.Text = "Select or type a species.";
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(WeightTextBox.Text))
+            {
+                ErrorMessageTextBlock.Text = "Weight is required.";
+                return false;
+            }
+            if (DobDatePicker.SelectedDate == null)
+            {
+                ErrorMessageTextBlock.Text = "Date of Birth is required.";
+                return false;
+            }
+
+            if (RadioIndividual.IsChecked == true && string.IsNullOrWhiteSpace(TagNumberBox.Text))
+            {
+                ErrorMessageTextBlock.Text = "Tag Number is required for individuals.";
+                return false;
+            }
+
+            if (RadioBatch.IsChecked == true && QuantityBox.Value < 2)
+            {
+                ErrorMessageTextBlock.Text = "Batch quantity must be 2 or more.";
+                return false;
+            }
+
+            return true;
+        }
+
+        // =========================================================
+        // 5. HELPER METHODS
+        // =========================================================
+        private void ClearForm()
+        {
+            SpeciesComboBox.SelectedIndex = -1;
+            WeightTextBox.Text = string.Empty;
+            DobDatePicker.SelectedDate = null;
+            NotesTextBox.Text = string.Empty;
+            TagNumberBox.Text = string.Empty;
+            QuantityBox.Value = 1; // Double 1.0
+
+            GenderMaleRadioButton.IsChecked = true;
+            StatusRecoveredRadioButton.IsChecked = true;
+            ActivityActiveRadioButton.IsChecked = true;
+
+            RadioIndividual.IsChecked = true;
+            Mode_Changed(null, null);
+        }
+
+        private void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_selectedLivestock == null)
+            {
+                ErrorMessageTextBlock.Text = "Please select a record to edit.";
+                return;
+            }
+
+            SpeciesComboBox.SelectedItem = _selectedLivestock.Species;
+            if (SpeciesComboBox.SelectedIndex == -1) SpeciesComboBox.Text = _selectedLivestock.Species;
+
+            WeightTextBox.Text = _selectedLivestock.Weight.ToString();
+            DobDatePicker.SelectedDate = _selectedLivestock.DateOfBirth;
+            NotesTextBox.Text = _selectedLivestock.Notes;
+            TagNumberBox.Text = _selectedLivestock.TagNumber;
+
+            // Safe Cast Int to Double for NumberBox
+            QuantityBox.Value = Convert.ToDouble(_selectedLivestock.Quantity);
+
+            if (_selectedLivestock.Quantity > 1) RadioBatch.IsChecked = true;
+            else RadioIndividual.IsChecked = true;
+
+            Mode_Changed(null, null);
+
+            if (_selectedLivestock.Gender == "Male") GenderMaleRadioButton.IsChecked = true;
+            else GenderFemaleRadioButton.IsChecked = true;
+
+            if (_selectedLivestock.Activity == "Active") ActivityActiveRadioButton.IsChecked = true;
+            else ActivityInactiveRadioButton.IsChecked = true;
+
+            switch (_selectedLivestock.Status)
+            {
+                case "Sold": StatusSoldRadioButton.IsChecked = true; break;
+                case "Under Treatment": StatusTreatmentRadioButton.IsChecked = true; break;
+                default: StatusRecoveredRadioButton.IsChecked = true; break;
+            }
+
+            SubmitButton.Content = "UPDATE";
+            EditButton.Visibility = Visibility.Collapsed;
+            RemoveButton.Visibility = Visibility.Collapsed;
+            CancelButton.Visibility = Visibility.Visible;
+            ErrorMessageTextBlock.Text = "Editing mode active.";
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            ExitEditMode();
+            ErrorMessageTextBlock.Text = "Edit cancelled.";
+        }
+
+        private void ExitEditMode()
+        {
+            _selectedLivestock = null;
+            ClearForm();
+            SubmitButton.Content = "SUBMIT";
+            EditButton.Visibility = Visibility.Visible;
+            RemoveButton.Visibility = Visibility.Visible;
+            CancelButton.Visibility = Visibility.Collapsed;
+            LivestockDataGrid.SelectedItem = null;
+        }
+
+        private async void RemoveButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_selectedLivestock == null) return;
+
+            using (var db = new AgrifyDbContext())
+            {
+                db.Livestock.Remove(_selectedLivestock);
+                await db.SaveChangesAsync();
+            }
+
+            LivestockList.Remove(_selectedLivestock);
+            ExitEditMode();
+        }
+
+        private void LivestockDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CancelButton.Visibility == Visibility.Collapsed)
+            {
+                _selectedLivestock = LivestockDataGrid.SelectedItem as Livestock;
+            }
+        }
+
+        // =========================================================
+        // 6. FILTER & SEARCH
+        // =========================================================
+        private void ApplyFilters()
+        {
+            if (_masterList == null) return;
+
+            string query = SearchTextBox.Text?.ToLower() ?? "";
+
+            var filtered = _masterList.Where(animal =>
+                (animal.Species != null && animal.Species.ToLower().Contains(query)) ||
+                (animal.TagNumber != null && animal.TagNumber.ToLower().Contains(query)) ||
+                (animal.Status != null && animal.Status.ToLower().Contains(query))
+            );
+
+            switch (SortComboBox.SelectedIndex)
+            {
+                case 1: filtered = filtered.OrderBy(x => x.Species); break;
+                case 2: filtered = filtered.OrderBy(x => x.Status); break;
+                default: filtered = filtered.OrderByDescending(x => x.Id); break;
+            }
+
+            LivestockList.Clear();
+            foreach (var animal in filtered) LivestockList.Add(animal);
+        }
+
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e) => ApplyFilters();
+        private void SortComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => ApplyFilters();
+
+        private async void SaveNewSpeciesButton_Click(object sender, RoutedEventArgs e)
+        {
+            NewSpeciesErrorTextBlock.Text = "";
+            var newSpecies = NewSpeciesTextBox.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(newSpecies)) return;
+            if (SpeciesList.Any(s => s.Equals(newSpecies, StringComparison.OrdinalIgnoreCase))) return;
+
+            using (var db = new AgrifyDbContext())
+            {
+                bool exists = await db.ItemCategories.AnyAsync(c => c.Name == newSpecies && c.CategoryType == "Livestock");
+                if (!exists)
+                {
+                    db.ItemCategories.Add(new ItemCategory { Name = newSpecies, CategoryType = "Livestock" });
+                    await db.SaveChangesAsync();
+                }
+            }
+
+            SpeciesList.Add(newSpecies);
+            SpeciesComboBox.SelectedItem = newSpecies;
+            AddSpeciesFlyout.Hide();
+            NewSpeciesTextBox.Text = "";
+        }
+
+        private void AddSpeciesButton_Click(object sender, RoutedEventArgs e) { /* UI reset */ }
     }
+}

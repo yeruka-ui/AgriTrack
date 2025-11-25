@@ -80,7 +80,7 @@ public sealed partial class MainShell : Page
                "produce" => typeof(ProducePage), 
                 "supplies" => typeof(SuppliesPage),
                 "fiscal" => typeof(FiscalPage),
-                //"reports" => typeof(ReportsPage),
+                "reports" => typeof(SalesReport),
                 "insights" => typeof(InsightsPage),
                 _ => typeof(DashboardPage) // Default
             };
