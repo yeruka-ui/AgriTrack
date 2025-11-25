@@ -25,6 +25,8 @@ namespace agrify.ViewModels
         private string _totalLivestock = "0";
         public string TotalLivestock { get => _totalLivestock; set { _totalLivestock = value; OnPropertyChanged(); } }
 
+        public ObservableCollection<StockAlertItem> LowStockItems { get; set; } = new ObservableCollection<StockAlertItem>();
+
         private string _activeHerdLabel = "+ 0 Active";
         public string ActiveHerdLabel { get => _activeHerdLabel; set { _activeHerdLabel = value; OnPropertyChanged(); } }
 
@@ -52,17 +54,48 @@ namespace agrify.ViewModels
                 {
                     using (var db = new AgrifyDbContext())
                     {
+                        // Load Tables
                         var animals = db.Livestock.ToList();
                         var produce = db.Produce.ToList();
                         var schedules = db.CalendarTasks.ToList();
+                        var expenses = db.Expenses.ToList(); // NEW: Load Expenses
 
-                        // 1. METRICS
+                        // 1. METRICS (EXISTING)
                         int totalCount = animals.Count;
-                        int activeCount = animals.Count(a => (a.Status ?? "").ToLower() != "dead" && (a.Status ?? "").ToLower() != "sold" && (a.Status ?? "").ToLower() != "deceased");
+                        int activeCount = animals.Count(a => (a.Status ?? "").ToLower() != "dead" && (a.Status ?? "").ToLower() != "sold");
                         int qurbaniCount = animals.Count(a => (a.Status ?? "").ToLower().Contains("fattening") || (a.Notes ?? "").ToLower().Contains("qurbani"));
+
+                        // BIRTHS (This was already working, kept as is)
                         int birthsCount = animals.Count(a => a.DateOfBirth.Month == DateTime.Now.Month && a.DateOfBirth.Year == DateTime.Now.Year);
 
-                        // 2. CHART DATA
+                        // 2. FINANCIAL METRICS (THE FIX)
+
+                        // A. FEED DAILY COST (Average of last 30 days)
+                        var last30Days = DateTime.Now.AddDays(-30);
+                        var recentFeedExpenses = expenses
+                            .Where(e => e.Category == "Feed" && e.Date >= last30Days)
+                            .Sum(e => (double)e.Amount);
+
+                        double dailyFeedCost = recentFeedExpenses / 30; // Avg per day
+
+                        // B. MILK PRODUCTION COST (Total Expenses / Total Liters in last 30 days)
+                        // We use ALL farm expenses (Feed, Vet, Labor) to get true cost, or just Feed for simple cost.
+                        // Let's use Feed + Vet + Maintenance for "Production Cost"
+                        var productionExpenses = expenses
+                            .Where(e => (e.Category == "Feed" || e.Category == "Medicine/Vet" || e.Category == "Maintenance") && e.Date >= last30Days)
+                            .Sum(e => (double)e.Amount);
+
+                        var totalLitersProduced = produce
+                            .Where(p => (p.ProduceType ?? "").ToLower().Contains("milk") && p.HarvestDate >= last30Days)
+                            .Sum(p => ParseWeight(p.Weight));
+
+                        double costPerLiter = 0;
+                        if (totalLitersProduced > 0)
+                        {
+                            costPerLiter = productionExpenses / totalLitersProduced;
+                        }
+
+                        // 3. CHART DATA (Milk Trend)
                         var last7Days = Enumerable.Range(0, 7).Select(i => DateTime.Today.AddDays(-6 + i)).ToList();
                         var chartItems = new System.Collections.Generic.List<BarChartItem>();
                         double maxVal = 1;
@@ -83,16 +116,18 @@ namespace agrify.ViewModels
                             });
                         }
 
+                        // Color Logic
                         foreach (var item in chartItems)
                         {
                             item.BarHeight = (item.RawValue / maxVal) * 100;
-                            if (item.BarHeight < 4 && item.RawValue > 0) item.BarHeight = 4;
+                            if (item.BarHeight < 4 && item.RawValue > 0) item.BarHeight = 4; // Min height for visibility
+
                             item.BarColor = item.DayLabel == DateTime.Today.ToString("ddd")
-                                ? new SolidColorBrush(Colors.LightGreen)
-                                : new SolidColorBrush(Colors.White);
+                                ? new SolidColorBrush(Colors.DarkGreen) // Today is Green
+                                : new SolidColorBrush(Colors.Black);     // Others are White
                         }
 
-                        // 3. REMINDERS (Prepared Logic)
+                        // 4. REMINDERS (Kept your existing logic, it was good)
                         var upcomingTasks = schedules
                             .Where(s => s.StartTime.Date >= DateTime.Today && s.StartTime.Date <= DateTime.Today.AddDays(7))
                             .OrderBy(s => s.StartTime)
@@ -100,17 +135,8 @@ namespace agrify.ViewModels
                             {
                                 string statusLabel = "Upcoming";
                                 var color = Colors.LightBlue;
-
-                                if (s.IsComplete)
-                                {
-                                    statusLabel = "Done";
-                                    color = Colors.Gray;
-                                }
-                                else if (s.StartTime.Date == DateTime.Today)
-                                {
-                                    statusLabel = "Today";
-                                    color = Colors.LightGreen;
-                                }
+                                if (s.IsComplete) { statusLabel = "Done"; color = Colors.Gray; }
+                                else if (s.StartTime.Date == DateTime.Today) { statusLabel = "Today"; color = Colors.LightGreen; }
 
                                 return new ReminderItem
                                 {
@@ -119,24 +145,23 @@ namespace agrify.ViewModels
                                     Status = statusLabel,
                                     StatusColor = color
                                 };
-                            })
-                            .ToList();
+                            }).ToList();
 
-                        // 4. UPDATE UI (THE FIX IS HERE)
+                        // 5. UPDATE UI
                         _dispatcherQueue.TryEnqueue(() =>
                         {
                             TotalLivestock = totalCount.ToString();
                             ActiveHerdLabel = $"+ {activeCount} Active Herd";
                             QurbaniReadyCount = qurbaniCount.ToString();
-                            NewBirthsCount = $"+{birthsCount}";
-                            MilkCostPerLiter = "Rs 1,156";
-                            FeedDailyCost = "Rs 0";
+                            NewBirthsCount = $"+{birthsCount}"; // This works!
 
-                            // Update Chart
+                            // UPDATED: Bind real values
+                            MilkCostPerLiter = $"Rs {costPerLiter:N0}";
+                            FeedDailyCost = $"Rs {dailyFeedCost:N0}";
+
                             MilkProductionTrend.Clear();
                             foreach (var item in chartItems) MilkProductionTrend.Add(item);
 
-                            // FIX: Update Reminders List! (This was missing)
                             UpcomingReminders.Clear();
                             if (upcomingTasks.Any())
                             {
@@ -145,6 +170,59 @@ namespace agrify.ViewModels
                             else
                             {
                                 UpcomingReminders.Add(new ReminderItem { Date = "--", Title = "No upcoming tasks", Status = "", StatusColor = Colors.Gray });
+                            }
+                        });
+                        // Inside LoadDataAsync...
+
+                        // 6. LOW STOCK ALERTS (SMART AGGREGATION)
+                        var lowStock = new System.Collections.Generic.List<StockAlertItem>();
+
+                        // STRATEGY: Group items by name and SUM their quantities. 
+                        // We filter out items with 0 quantity (sold out) to keep the list clean.
+                        var produceInventory = produce
+                            .Where(p => p.Quantity > 0)
+                            .GroupBy(p => p.ProduceType)
+                            .Select(g => new
+                            {
+                                Name = g.Key,
+                                TotalQty = g.Sum(p => p.Quantity)
+                            })
+                            .Where(i => i.TotalQty < 20) // The Threshold (Adjust to your preference)
+                            .ToList();
+
+                        foreach (var item in produceInventory)
+                        {
+                            // Optional: Skip "Milk" if you consider it a daily harvest rather than stocked inventory
+                            // if (item.Name.ToLower().Contains("milk")) continue;
+
+                            lowStock.Add(new StockAlertItem
+                            {
+                                Name = item.Name,
+                                QuantityLabel = $"{item.TotalQty} Left"
+                            });
+                        }
+
+                        // Check Expenses (e.g. Feed)
+                        // Since your Expense table just tracks money spent, not quantity remaining, 
+                        // we can't reliably calculate "Feed Stock" from the Expenses table alone. 
+                        // You would need an "Inventory" table for that. 
+                        // For now, the Produce Aggregation above fixes the "7 Milk Alerts" bug.
+
+                        // UPDATE UI
+                        _dispatcherQueue.TryEnqueue(() =>
+                        {
+                            // ... (Other updates remain the same) ...
+
+                            // Bind Low Stock
+                            LowStockItems.Clear();
+                            if (lowStock.Any())
+                            {
+                                foreach (var item in lowStock) LowStockItems.Add(item);
+                            }
+                            else
+                            {
+                                // If stock is healthy, show a green/positive message
+                                LowStockItems.Add(new StockAlertItem { Name = "Inventory Healthy", QuantityLabel = "All Good" });
                             }
                         });
                     }
