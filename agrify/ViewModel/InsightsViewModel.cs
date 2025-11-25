@@ -197,5 +197,7 @@ namespace agrify.ViewModels
         public string ValueLabel { get; set; }
         public double BarHeight { get; set; }
         public SolidColorBrush BarColor { get; set; }
+
+        public double RawValue { get; set; }
     }
 }

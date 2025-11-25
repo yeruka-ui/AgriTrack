@@ -233,7 +233,7 @@
             </Grid>
 
             <!-- Row 1: Calendar View (Reduced Height) -->
-            <CalendarView x:Name="MainCalendarView"
+            <CalendarView TodayBackground="#8DC63F" CalendarItemPressedBackground="Chartreuse" SelectedBackground="Transparent" x:Name="MainCalendarView"
                           Grid.Row="1"
                           MinWidth="450"
                           MaxWidth="1200"

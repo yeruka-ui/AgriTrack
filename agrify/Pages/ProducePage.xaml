@@ -8,205 +8,290 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     mc:Ignorable="d"
     Loaded="Page_Loaded"
-    Background="#FF2D2D30">
+    RequestedTheme="Light"
+    Background="White">
 
     <Grid Padding="48">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <!-- Input Title -->
             <RowDefinition Height="Auto" />
-            <!-- Input Row 1 -->
             <RowDefinition Height="Auto" />
-            <!-- Input Row 2 (Notes/Submit) -->
             <RowDefinition Height="Auto" />
-            <!-- DataGrid Title -->
             <RowDefinition Height="Auto" />
-            <!-- Search/Sort -->
             <RowDefinition Height="*" />
-            <!-- DataGrid -->
         </Grid.RowDefinitions>
 
-        <!-- Row 0: "INPUT INFORMATION" Title -->
         <TextBlock Text="INPUT INFORMATION"
                    Grid.Row="0"
-                   Foreground="White"
+                   Foreground="Black"
                    FontSize="16"
-                   FontWeight="Bold"
+                   FontWeight="SemiBold"
+                   FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
                    Margin="0,-30,0,10"/>
 
-        <!-- Row 1: Input Fields -->
-        <Grid Grid.Row="1" Margin="0,0,0,20">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" MinWidth="180" />
-                <!-- Produce / Batch -->
-                <ColumnDefinition Width="1*" MinWidth="120" />
-                <!-- Quantity -->
-                <ColumnDefinition Width="1*" MinWidth="120" />
-                <!-- Weight -->
-                <ColumnDefinition Width="1.5*" MinWidth="150" />
-                <!-- Date Harvested -->
-            </Grid.ColumnDefinitions>
+        <Border Grid.Row="1" 
+                Margin="0,0,0,20"
+                Background="White"
+                CornerRadius="12"
+                Padding="20"
+                BorderBrush="#E0E0E0"
+                BorderThickness="1">
+            <Border.Shadow>
+                <ThemeShadow />
+            </Border.Shadow>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" MinWidth="180" />
+                    <ColumnDefinition Width="1*" MinWidth="120" />
+                    <ColumnDefinition Width="1*" MinWidth="120" />
+                    <ColumnDefinition Width="1.5*" MinWidth="150" />
+                </Grid.ColumnDefinitions>
 
-            <!-- Column 0: Produce / Batch ComboBox -->
-            <StackPanel Grid.Column="0" Margin="0,0,10,0">
-                <TextBlock Text="PRODUCE / BATCH" Foreground="LightGray" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                    <TextBlock Text="PRODUCE / BATCH" 
+                               Foreground="#666666" 
+                               FontWeight="SemiBold"
+                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
+                               Margin="0,0,0,5"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                    <ComboBox x:Name="ProduceTypeComboBox"
-                              Grid.Column="0"
-                              Background="#FFD9FFD9"
-                              Foreground="Black" 
-                              HorizontalAlignment="Stretch"
-                              PlaceholderText="Select produce type..." />
+                        <ComboBox PlaceholderForeground="Black" x:Name="ProduceTypeComboBox"
+                                  Grid.Column="0"
+                                  Background="#EAFFCE"
+                                  Foreground="Black"
+                                  FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
+                                  HorizontalAlignment="Stretch"
+                                  PlaceholderText="Select produce type..." />
 
-                    <Button x:Name="AddProduceTypeButton"
-                            Grid.Column="1"
-                            Content="+"
-                            FontWeight="Bold"
-                            Margin="5,0,0,0"
-                            Click="AddProduceTypeButton_Click">
-                        <Button.Flyout>
-                            <Flyout x:Name="AddProduceTypeFlyout" Placement="Bottom">
-                                <StackPanel Spacing="10" Width="250">
-                                    <TextBlock Text="Add New Produce Type" FontWeight="Bold" />
-                                    <TextBox x:Name="NewProduceTypeTextBox" PlaceholderText="e.g., Cherry Tomatoes" Foreground="Black"/>
-                                    <TextBlock x:Name="NewProduceTypeErrorTextBlock" Foreground="Red" TextWrapping="Wrap" />
-                                    <Button x:Name="SaveNewProduceTypeButton" Content="Save" Click="SaveNewProduceTypeButton_Click" HorizontalAlignment="Stretch" />
-                                </StackPanel>
-                            </Flyout>
-                        </Button.Flyout>
-                    </Button>
-                </Grid>
-            </StackPanel>
-
-            <!-- Column 1: Quantity -->
-            <StackPanel Grid.Column="1" Margin="10,0,10,0">
-                <TextBlock Text="QUANTITY" Foreground="LightGray" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                <NumberBox x:Name="QuantityNumberBox"
-                           PlaceholderText="e.g., 150"
-                           Background="#FFD9FFD9"
-                           Foreground="Black"
-                           SpinButtonPlacementMode="Compact"
-                           SmallChange="1"
-                           LargeChange="10"
-                           Value="0"/>
-            </StackPanel>
-
-            <!-- Column 2: Weight -->
-            <StackPanel Grid.Column="2" Margin="10,0,10,0">
-                <TextBlock Text="TOTAL WEIGHT (KG)" Foreground="LightGray" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                <TextBox x:Name="WeightTextBox" PlaceholderText="e.g., 50.5" Background="#FFD9FFD9" Foreground="Black" />
-            </StackPanel>
-
-            <!-- Column 3: Date Harvested -->
-            <StackPanel Grid.Column="3" Margin="10,0,10,0">
-                <TextBlock Text="DATE HARVESTED / ACQUIRED" Foreground="LightGray" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                <DatePicker x:Name="HarvestDatePicker" Background="#FFD9FFD9" Foreground="Black" />
-            </StackPanel>
-
-        </Grid>
-
-        <!-- Row 2: Notes and Submit/Edit/Remove Buttons -->
-        <Grid Grid.Row="2" Margin="0,0,0,40">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <!-- Notes field -->
-                <ColumnDefinition Width="Auto" />
-                <!-- Buttons -->
-            </Grid.ColumnDefinitions>
-
-            <StackPanel Grid.Column="0" Margin="0,0,20,0">
-                <TextBlock Text="NOTES (OPTIONAL)" Foreground="LightGray" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                <TextBox MinWidth="500" HorizontalAlignment="Left" x:Name="NotesTextBox"
-                         PlaceholderText="Add any notes here (e.g., quality, storage)..."
-                         Background="#FFD9FFD9"
-                         Foreground="Black"
-                         Height="90"
-                         AcceptsReturn="True"
-                         TextWrapping="Wrap"
-                         ScrollViewer.VerticalScrollBarVisibility="Auto" />
-            </StackPanel>
-
-            <StackPanel Grid.Column="1" Spacing="10" VerticalAlignment="Bottom">
-
-                <StackPanel Orientation="Horizontal" Spacing="10">
-                    <Button x:Name="SubmitButton"
-                            Content="SUBMIT"
-                            Width="120"
-                            Background="#FF006400"
-                            Foreground="White"
-                            FontWeight="Bold"
-                            Click="SubmitButton_Click" />
-
-                    <Button x:Name="EditButton"
-                            Content="EDIT"
-                            Width="90"
-                            Background="#FFB8860B" 
-                            Foreground="White"
-                            FontWeight="Bold"
-                            Click="EditButton_Click" />
-
-                    <Button x:Name="RemoveButton"
-                            Content="REMOVE"
-                            Width="90"
-                            Background="#FFB22222"
-                            Foreground="White"
-                            FontWeight="Bold"
-                            Click="RemoveButton_Click" />
-
-                    <!-- NEW: Cancel Button, hidden by default -->
-                    <Button x:Name="CancelButton"
-                            Content="CANCEL"
-                            Width="90"
-                            Background="#FF696969"
-                            Foreground="White"
-                            FontWeight="Bold"
-                            Click="CancelButton_Click"
-                            Visibility="Collapsed"/>
+                        <Button x:Name="AddProduceTypeButton"
+                                Grid.Column="1"
+                                Content="+"
+                                FontWeight="Bold"
+                                FontFamily="ms-appx:///Assets/NewFolder/Poppins-Bold.ttf#Poppins"
+                                Background="#8DC63F"
+                                Foreground="White"
+                                Margin="5,0,0,0"
+                                Click="AddProduceTypeButton_Click">
+                            <Button.Flyout>
+                                <Flyout x:Name="AddProduceTypeFlyout" Placement="Bottom">
+                                    <StackPanel Spacing="10" Width="250">
+                                        <TextBlock Text="Add New Produce Type" 
+                                                   FontWeight="SemiBold"
+                                                   FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"/>
+                                        <TextBox x:Name="NewProduceTypeTextBox" 
+                                                 PlaceholderText="e.g., Cherry Tomatoes" 
+                                                 Foreground="Black"
+                                                 FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
+                                        <TextBlock x:Name="NewProduceTypeErrorTextBlock" 
+                                                   Foreground="Red" 
+                                                   TextWrapping="Wrap"
+                                                   FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
+                                        <Button x:Name="SaveNewProduceTypeButton" 
+                                                Content="Save" 
+                                                Click="SaveNewProduceTypeButton_Click" 
+                                                HorizontalAlignment="Stretch"
+                                                Background="#8DC63F"
+                                                Foreground="White"
+                                                FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"/>
+                                    </StackPanel>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
+                    </Grid>
                 </StackPanel>
 
-                <TextBlock x:Name="ErrorMessageTextBlock"
-                           Foreground="Red"
-                           FontWeight="Bold"
-                           TextWrapping="Wrap"
-                           MaxWidth="320" />
-            </StackPanel>
-        </Grid>
+                <StackPanel Grid.Column="1" Margin="10,0,10,0">
+                    <TextBlock Text="QUANTITY" 
+                               Foreground="#666666" 
+                               FontWeight="SemiBold"
+                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
+                               Margin="0,0,0,5"/>
+                    <NumberBox x:Name="QuantityNumberBox"
+                               PlaceholderText="e.g., 150"
+                               Background="#EAFFCE"
+                               Foreground="Black"
+                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
+                               SpinButtonPlacementMode="Compact"
+                               SmallChange="1"
+                               LargeChange="10"
+                               Value="0"/>
+                </StackPanel>
 
-        <!-- Row 3: "PRODUCE DATA" Title (Unchanged) -->
+                <StackPanel Grid.Column="2" Margin="10,0,10,0">
+                    <TextBlock Text="TOTAL WEIGHT (KG)" 
+                               Foreground="#666666" 
+                               FontWeight="SemiBold"
+                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
+                               Margin="0,0,0,5"/>
+                    <TextBox PlaceholderForeground="Black" x:Name="WeightTextBox" 
+                             PlaceholderText="e.g., 50.5" 
+                             Background="#EAFFCE" 
+                             Foreground="Black"
+                             FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="3" Margin="10,0,10,0">
+                    <TextBlock Text="DATE HARVESTED / ACQUIRED" 
+                               Foreground="#666666" 
+                               FontWeight="SemiBold"
+                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
+                               Margin="0,0,0,5"/>
+                    <DatePicker x:Name="HarvestDatePicker" 
+                                Background="#EAFFCE" 
+                                Foreground="Black"
+                                FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="2" 
+                Margin="0,0,0,40"
+                Background="White"
+                CornerRadius="12"
+                Padding="20"
+                BorderBrush="#E0E0E0"
+                BorderThickness="1">
+            <Border.Shadow>
+                <ThemeShadow />
+            </Border.Shadow>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                    <TextBlock Text="NOTES (OPTIONAL)" 
+                               Foreground="#666666" 
+                               FontWeight="SemiBold"
+                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
+                               Margin="0,0,0,5"/>
+                    <TextBox PlaceholderForeground="Black" MinWidth="500" 
+                             HorizontalAlignment="Left" 
+                             x:Name="NotesTextBox"
+                             PlaceholderText="Add any notes here (e.g., quality, storage)..."
+                             Background="#EAFFCE"
+                             Foreground="Black"
+                             FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
+                             Height="90"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Spacing="10" VerticalAlignment="Bottom">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <Button x:Name="SubmitButton"
+                                Content="SUBMIT"
+                                Width="120"
+                                Background="#8DC63F"
+                                Foreground="White"
+                                FontWeight="SemiBold"
+                                FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
+                                CornerRadius="8"
+                                Click="SubmitButton_Click">
+                            <Button.Shadow>
+                                <ThemeShadow />
+                            </Button.Shadow>
+                        </Button>
+
+                        <Button x:Name="EditButton"
+                                Content="EDIT"
+                                Width="90"
+                                Background="#FFB8860B" 
+                                Foreground="White"
+                                FontWeight="SemiBold"
+                                FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
+                                CornerRadius="8"
+                                Click="EditButton_Click">
+                            <Button.Shadow>
+                                <ThemeShadow />
+                            </Button.Shadow>
+                        </Button>
+
+                        <Button x:Name="RemoveButton"
+                                Content="REMOVE"
+                                Width="90"
+                                Background="#FFB22222"
+                                Foreground="White"
+                                FontWeight="SemiBold"
+                                FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
+                                CornerRadius="8"
+                                Click="RemoveButton_Click">
+                            <Button.Shadow>
+                                <ThemeShadow />
+                            </Button.Shadow>
+                        </Button>
+
+                        <Button x:Name="CancelButton"
+                                Content="CANCEL"
+                                Width="90"
+                                Background="#FF696969"
+                                Foreground="White"
+                                FontWeight="SemiBold"
+                                FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
+                                CornerRadius="8"
+                                Click="CancelButton_Click"
+                                Visibility="Collapsed">
+                            <Button.Shadow>
+                                <ThemeShadow />
+                            </Button.Shadow>
+                        </Button>
+                    </StackPanel>
+
+                    <TextBlock x:Name="ErrorMessageTextBlock"
+                               Foreground="Red"
+                               FontWeight="SemiBold"
+                               FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
+                               TextWrapping="Wrap"
+                               MaxWidth="320" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
         <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,0,0,10">
             <TextBlock Text="PRODUCE DATA"
-                       Foreground="White"
+                       Foreground="Black"
                        FontSize="16"
-                       FontWeight="Bold"
+                       FontWeight="SemiBold"
+                       FontFamily="ms-appx:///Assets/NewFolder/Poppins-SemiBold.ttf#Poppins"
                        VerticalAlignment="Bottom"/>
             <TextBlock Text="Produce"
-                       Foreground="LightGray"
+                       Foreground="#666666"
                        FontSize="14"
+                       FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
                        Margin="10,0,0,0"
                        VerticalAlignment="Bottom"/>
         </StackPanel>
 
-        <!-- Row 4: Search/Sort (Unchanged) -->
         <Grid Grid.Row="4" Margin="0,0,0,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBox MinWidth="500" x:Name="SearchTextBox"
-                   PlaceholderText="Search"
-                   Grid.Column="0"
-                   MaxWidth="300"
-                   HorizontalAlignment="Left" />
+            <TextBox Foreground="#3B8C20" PlaceholderForeground="Black" Background="#EAFFCE" MinWidth="500" x:Name="SearchTextBox"
+                     PlaceholderText="Search"
+                     Grid.Column="0"
+                     MaxWidth="300"
+                     FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
+                     HorizontalAlignment="Left" 
+                     TextChanged="SearchTextBox_TextChanged"/>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                <TextBlock Text="Sort by: " Foreground="LightGray" VerticalAlignment="Center" />
-                <ComboBox x:Name="SortComboBox" SelectedIndex="0">
+                <TextBlock Text="Sort by: " 
+                           Foreground="#666666" 
+                           VerticalAlignment="Center"
+                           FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"/>
+
+                <ComboBox Foreground="Black" Background="#EAFFCE" x:Name="SortComboBox" 
+                          SelectedIndex="0"
+                          FontFamily="ms-appx:///Assets/NewFolder/Poppins-Regular.ttf#Poppins"
+                          SelectionChanged="SortComboBox_SelectionChanged">
                     <ComboBoxItem Content="Recently Added" />
                     <ComboBoxItem Content="Produce Type" />
                     <ComboBoxItem Content="Quantity" />
@@ -214,25 +299,33 @@
             </StackPanel>
         </Grid>
 
-        <!-- Row 5: DataGrid -->
-        <controls:DataGrid x:Name="ProduceDataGrid"
-                           Grid.Row="5"
-                           AutoGenerateColumns="False"
-                           CanUserSortColumns="True"
-                           IsReadOnly="True"
-                           GridLinesVisibility="Horizontal"
-                           HorizontalScrollBarVisibility="Auto"
-                           SelectionChanged="ProduceDataGrid_SelectionChanged">
-            <!-- ADDED THIS -->
+        <Border Grid.Row="5"
+                Background="White"
+                CornerRadius="12"
+                BorderBrush="#E0E0E0"
+                BorderThickness="1"
+                Padding="10">
+            <Border.Shadow>
+                <ThemeShadow />
+            </Border.Shadow>
+            <controls:DataGrid Foreground="#3B8C20" x:Name="ProduceDataGrid"
+                               AutoGenerateColumns="False"
+                               CanUserSortColumns="True"
+                               IsReadOnly="True"
+                               GridLinesVisibility="Horizontal"
+                               HorizontalScrollBarVisibility="Auto"
+                               Background="White"
+                               SelectionChanged="ProduceDataGrid_SelectionChanged">
 
-            <controls:DataGrid.Columns>
-                <controls:DataGridTextColumn Header="Produce / Batch" Binding="{Binding ProduceType}" Width="Auto" />
-                <controls:DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="Auto" />
-                <controls:DataGridTextColumn Header="Weight (KG)" Binding="{Binding Weight}" Width="Auto" />
-                <controls:DataGridTextColumn Header="Date Harvested (MM/DD/YYYY)" Binding="{Binding HarvestDate}" Width="Auto" />
-                <controls:DataGridTextColumn Header="Notes" Binding="{Binding Notes}" Width="*" />
-            </controls:DataGrid.Columns>
-        </controls:DataGrid>
+                <controls:DataGrid.Columns>
+                    <controls:DataGridTextColumn Header="Produce / Batch" Binding="{Binding ProduceType}" Width="Auto" />
+                    <controls:DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="Auto" />
+                    <controls:DataGridTextColumn Header="Weight (KG)" Binding="{Binding Weight}" Width="Auto" />
+                    <controls:DataGridTextColumn Header="Date Harvested (MM/DD/YYYY)" Binding="{Binding HarvestDate}" Width="Auto" />
+                    <controls:DataGridTextColumn Header="Notes" Binding="{Binding Notes}" Width="*" />
+                </controls:DataGrid.Columns>
+            </controls:DataGrid>
+        </Border>
 
     </Grid>
 </Page>
